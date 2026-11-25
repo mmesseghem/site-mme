@@ -1,0 +1,17 @@
+# Dépendances et fichiers générés
+node_modules/
+.next/
+out/
+build/
+.vercel/
+
+# Secrets : ne jamais envoyer sur GitHub
+.env
+.env*.local
+.env.*
+!.env.example
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+*.log
