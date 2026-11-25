@@ -415,6 +415,13 @@ img {
 .carte-horaires .statut-detail.bientot {
   color: var(--bordeaux);
 }
+/* Sur la photo de la façade, la carte se place à droite pour ne pas cacher l'enseigne. */
+@media (min-width: 961px) {
+  .hero-visuel .carte-horaires {
+    left: auto;
+    right: -12px;
+  }
+}
 /* Fermé : point bordeaux et numéros de garde et d'urgence mis en avant */
 .carte-horaires.ferme strong::before {
   background: var(--bordeaux);
