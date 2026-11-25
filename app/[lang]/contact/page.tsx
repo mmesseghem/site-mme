@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionnaire } from "@/content/dictionnaires";
@@ -63,8 +64,13 @@ export default async function Contact({ params }: PageProps<"/[lang]/contact">) 
           </div>
         </dl>
         <div className="contact-visuel">
-          {/* À remplacer par la photo de la façade. */}
-          <div className="photo-a-venir">{c.photoFacade}</div>
+          <Image
+            src="/images/photos/facade.jpg"
+            alt={c.altFacade}
+            width={1600}
+            height={1065}
+            sizes="(max-width: 960px) 100vw, 540px"
+          />
           <p>{c.carte}</p>
         </div>
       </div>

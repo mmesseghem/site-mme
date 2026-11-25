@@ -1,5 +1,6 @@
 // Page d'accueil : base de la maquette version 1, avec les cartes numérotées,
 // « Notre philosophie » et « Nous trouver » repris de la version premium.
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import MaisonAnimee from "@/components/MaisonAnimee";
@@ -41,8 +42,14 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
             </div>
           </div>
           <div className="hero-visuel">
-            {/* À remplacer par la photo de l'équipe (séance photo 2025). */}
-            <div className="photo-a-venir">{a.photoEquipe}</div>
+            <Image
+              src="/images/photos/equipe-2025.jpg"
+              alt={a.altEquipe}
+              width={1024}
+              height={683}
+              sizes="(max-width: 960px) 100vw, 560px"
+              priority
+            />
             <p className="carte-horaires">
               <strong>{a.horairesTitre}</strong>
               <span>{a.horaires}</span>
@@ -118,8 +125,13 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
 
       <section className="wrap section" aria-labelledby="titre-trouver">
         <div className="trouver">
-          {/* À remplacer par la photo de la façade. */}
-          <div className="photo-a-venir">{a.photoFacade}</div>
+          <Image
+            src="/images/photos/facade.jpg"
+            alt={a.altFacade}
+            width={1600}
+            height={1065}
+            sizes="(max-width: 960px) 100vw, 600px"
+          />
           <div className="trouver-infos">
             <span className="surtitre">{a.trouverSurtitre}</span>
             <h2 id="titre-trouver">
