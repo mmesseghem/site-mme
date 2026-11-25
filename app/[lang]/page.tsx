@@ -1,12 +1,14 @@
-// Page d'accueil : base de la maquette version 1, avec les cartes numérotées,
-// « Notre philosophie » et « Nous trouver » repris de la version premium.
+// Page d'accueil — version B, d'après le plan du groupe de travail :
+// accueil, infos pratiques, urgences, « Je souhaite… », nos soins, forfait, activités et La Récré.
+// Charte et style de la maquette version 1 ; « Notre philosophie » gardée en version courte.
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import IconeSoin from "@/components/Icones";
 import MaisonAnimee from "@/components/MaisonAnimee";
 import { getDictionnaire } from "@/content/dictionnaires";
 import { hasLocale, href } from "@/lib/i18n";
-import { contact, equipe } from "@/lib/site";
+import { contact, soins } from "@/lib/site";
 
 function Fleche() {
   return (
@@ -22,81 +24,148 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
   const dict = getDictionnaire(lang);
   const a = dict.accueil;
 
-  const liensAcces = [contact.telephoneLien, href(lang, "/pratique/demande-medicaments"), href(lang, "/pratique/inscription")];
+  const liensSouhaits = [
+    href(lang, "/pratique/inscription"),
+    href(lang, "/pratique/demande-medicaments"),
+    href(lang, "/pratique/faq"),
+  ];
 
   return (
     <>
       <section className="hero">
         <div className="wrap grille-2">
           <div className="hero-texte">
-            <span className="surtitre">{a.surtitre}</span>
             <h1>{a.titre}</h1>
             <p>{a.texte}</p>
             <div className="boutons">
               <a href={contact.telephoneLien} className="bouton bouton-plein">
-                {a.boutonRdv}
+                {a.boutonAppeler}
               </a>
               <Link href={href(lang, "/pratique/demande-medicaments")} className="bouton bouton-contour">
                 {a.boutonMedic}
               </Link>
             </div>
+            <p className="hero-horaires">{a.horairesLigne}</p>
           </div>
           <div className="hero-visuel">
             <Image
-              src="/images/photos/equipe-2025.jpg"
-              alt={a.altEquipe}
-              width={1024}
-              height={683}
+              src="/images/photos/facade-2026.jpg"
+              alt={a.altFacade}
+              width={1600}
+              height={1024}
               sizes="(max-width: 960px) 100vw, 560px"
               priority
             />
-            <p className="carte-horaires">
-              <strong>{a.horairesTitre}</strong>
-              <span>{a.horaires}</span>
-              <span>{a.garde}</span>
-            </p>
           </div>
         </div>
       </section>
 
-      <div className="wrap">
-        <ul className="acces">
-          {a.acces.map((carte, i) => {
-            const lien = liensAcces[i];
-            const contenu = (
-              <>
-                <span className="acces-numero">{String(i + 1).padStart(2, "0")}</span>
-                <span className="acces-titre">{carte.titre}</span>
-                <span className="acces-texte">{carte.texte}</span>
-              </>
-            );
-            return (
-              <li key={carte.titre} className={i === 1 ? "acces-mis-en-avant" : undefined}>
-                {lien.startsWith("tel:") ? <a href={lien}>{contenu}</a> : <Link href={lien}>{contenu}</Link>}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-
-      <section className="wrap section" aria-labelledby="titre-poles">
-        <div className="entete-section">
-          <div>
-            <span className="surtitre">{a.polesSurtitre}</span>
-            <h2 id="titre-poles">{a.polesTitre}</h2>
-          </div>
-          <p>{a.polesTexte}</p>
+      <section className="wrap infos-pratiques" aria-label={dict.pied.colPratique}>
+        <div>
+          <h2>{a.libAdresse}</h2>
+          <p>
+            {contact.rue}, {contact.ville}
+          </p>
+          <p>
+            <Link href={href(lang, "/contact")}>{a.lienAcces}</Link>
+          </p>
+          <p className="a-completer">{a.aCompleterAcces}</p>
         </div>
-        <ul className="grille-poles">
-          {equipe.map((s) => (
+        <div>
+          <h2>{a.libContact}</h2>
+          <p>
+            <a href={contact.telephoneLien}>{contact.telephone}</a>
+          </p>
+          <p>
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          </p>
+        </div>
+        <div>
+          <h2>{a.libHoraires}</h2>
+          <p>{a.horaires}</p>
+          <p className="a-completer">{a.aCompleterConsultations}</p>
+        </div>
+      </section>
+
+      <section className="wrap" aria-labelledby="titre-urgence">
+        <div className="urgence">
+          <div>
+            <h2 id="titre-urgence">{a.urgenceTitre}</h2>
+            <p>{a.urgenceTexte}</p>
+          </div>
+          <p className="urgence-numeros">
+            <a href={contact.gardeLien}>
+              {a.libGarde} : <strong>{contact.garde}</strong>
+            </a>
+            <span aria-hidden="true">·</span>
+            <a href={contact.urgencesLien}>
+              {a.libUrgences} : <strong>{contact.urgences}</strong>
+            </a>
+          </p>
+        </div>
+      </section>
+
+      <section className="wrap section" aria-labelledby="titre-souhaite">
+        <h2 id="titre-souhaite" className="titre-section">
+          {a.souhaiteTitre}
+        </h2>
+        <ul className="acces" style={{ paddingTop: 0 }}>
+          {a.souhaits.map((s, i) => (
+            <li key={s.titre} className={i === 1 ? "acces-mis-en-avant" : undefined}>
+              <Link href={liensSouhaits[i]}>
+                <span className="acces-numero">{String(i + 1).padStart(2, "0")}</span>
+                <span className="acces-titre">{s.titre}</span>
+                <span className="acces-texte">{s.texte}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="wrap" aria-labelledby="titre-soins">
+        <h2 id="titre-soins" className="titre-section">
+          {a.soinsTitre}
+        </h2>
+        <ul className="grille-soins">
+          {soins.map((s) => (
             <li key={s}>
-              <Link href={href(lang, `/equipe/${s}`)}>
-                <span>{dict.poles[s]}</span>
+              <Link href={href(lang, `/soins/${s}`)}>
+                <span className="soin-icone">
+                  <IconeSoin soin={s} />
+                </span>
+                <span className="soin-nom">{dict.soins[s]}</span>
                 <Fleche />
               </Link>
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="wrap section" aria-labelledby="titre-forfait">
+        <div className="forfait">
+          <div>
+            <h2 id="titre-forfait">{a.forfaitTitre}</h2>
+            <p>{a.forfaitTexte}</p>
+          </div>
+          <Link href={href(lang, "/pratique/inscription")} className="bouton bouton-sombre">
+            {a.forfaitBouton}
+          </Link>
+        </div>
+      </section>
+
+      <section className="wrap activites" aria-label={`${a.activitesTitre} · ${a.recreTitre}`}>
+        <div className="activite">
+          <h2>{a.activitesTitre}</h2>
+          <p>{a.activitesTexte}</p>
+          <p className="activite-date">{a.prochaineDate}</p>
+          <Link href={href(lang, "/actions/planning")}>{a.activitesLien}</Link>
+        </div>
+        <div className="activite">
+          <h2>{a.recreTitre}</h2>
+          <p>{a.recreTexte}</p>
+          <p className="activite-date">{a.prochaineDate}</p>
+          <Link href={href(lang, "/actions/la-recre")}>{a.recreLien}</Link>
+        </div>
       </section>
 
       <section className="philosophie" aria-labelledby="titre-philosophie">
@@ -109,76 +178,11 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
             {a.philoDebut} <em>{a.philoMisEnAvant}</em>
             {a.philoFin}
           </p>
-          <dl className="valeurs">
-            {a.valeurs.map((v) => (
-              <div key={v.titre}>
-                <dt>{v.titre}</dt>
-                <dd>{v.texte}</dd>
-              </div>
-            ))}
-          </dl>
           <Link href={href(lang, "/philosophie")} className="philosophie-lien">
             {a.philoLien}
           </Link>
         </div>
       </section>
-
-      <section className="wrap section" aria-labelledby="titre-trouver">
-        <div className="trouver">
-          <Image
-            src="/images/photos/entree-2026.jpg"
-            alt={a.altFacade}
-            width={1400}
-            height={1501}
-            sizes="(max-width: 960px) 100vw, 600px"
-          />
-          <div className="trouver-infos">
-            <span className="surtitre">{a.trouverSurtitre}</span>
-            <h2 id="titre-trouver">
-              {contact.rue},
-              <br />
-              {contact.ville}
-            </h2>
-            <dl>
-              <div>
-                <dt>{a.libTelephone}</dt>
-                <dd>
-                  <a href={contact.telephoneLien}>{contact.telephone}</a>
-                </dd>
-              </div>
-              <div>
-                <dt>{a.libEmail}</dt>
-                <dd>
-                  <a href={`mailto:${contact.email}`}>{contact.email}</a>
-                </dd>
-              </div>
-              <div>
-                <dt>{a.libHoraires}</dt>
-                <dd>{a.horairesValeur}</dd>
-              </div>
-              <div>
-                <dt>{a.libGarde}</dt>
-                <dd>{contact.garde}</dd>
-              </div>
-            </dl>
-            <Link href={href(lang, "/contact")} className="bouton bouton-contour">
-              {a.trouverLien}
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <div className="wrap" style={{ paddingBottom: 96 }}>
-        <div className="rejoindre">
-          <div>
-            <h2>{a.rejoindreTitre}</h2>
-            <p>{a.rejoindreTexte}</p>
-          </div>
-          <Link href={href(lang, "/offres-emploi")} className="bouton bouton-sombre">
-            {a.rejoindreBouton}
-          </Link>
-        </div>
-      </div>
     </>
   );
 }

@@ -6,6 +6,20 @@ import type { Dictionnaire } from "@/content/dictionnaires";
 type Props = { lang: Locale; dict: Dictionnaire };
 
 export default function PiedDePage({ lang, dict }: Props) {
+  const pratique = [
+    { href: "/pratique/demande-medicaments", texte: dict.pratique["demande-medicaments"] },
+    { href: "/pratique/inscription", texte: dict.pratique.inscription },
+    { href: "/pratique/faq", texte: dict.pratique.faq },
+    { href: "/pratique/newsletter", texte: dict.pratique.newsletter },
+    { href: "/contact", texte: dict.nav.contact },
+  ];
+  const maison = [
+    { href: "/equipe", texte: dict.maison.equipe },
+    { href: "/philosophie", texte: dict.maison.philosophie },
+    { href: "/historique", texte: dict.maison.historique },
+    { href: "/offres-emploi", texte: dict.maison["offres-emploi"] },
+  ];
+
   return (
     <footer className="pied">
       <div className="wrap pied-colonnes">
@@ -23,29 +37,21 @@ export default function PiedDePage({ lang, dict }: Props) {
         <nav className="pied-colonne" aria-label={dict.pied.colPratique}>
           <span className="pied-titre">{dict.pied.colPratique}</span>
           <ul>
-            <li>
-              <Link href={href(lang, "/pratique/demande-medicaments")}>{dict.pratique["demande-medicaments"]}</Link>
-            </li>
-            <li>
-              <Link href={href(lang, "/pratique/faq")}>{dict.pratique.faq}</Link>
-            </li>
-            <li>
-              <Link href={href(lang, "/contact")}>{dict.nav.contact}</Link>
-            </li>
+            {pratique.map((l) => (
+              <li key={l.href}>
+                <Link href={href(lang, l.href)}>{l.texte}</Link>
+              </li>
+            ))}
           </ul>
         </nav>
         <nav className="pied-colonne" aria-label={dict.pied.colMaison}>
           <span className="pied-titre">{dict.pied.colMaison}</span>
           <ul>
-            <li>
-              <Link href={href(lang, "/philosophie")}>{dict.maison.philosophie}</Link>
-            </li>
-            <li>
-              <Link href={href(lang, "/historique")}>{dict.maison.historique}</Link>
-            </li>
-            <li>
-              <Link href={href(lang, "/offres-emploi")}>{dict.maison["offres-emploi"]}</Link>
-            </li>
+            {maison.map((l) => (
+              <li key={l.href}>
+                <Link href={href(lang, l.href)}>{l.texte}</Link>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>

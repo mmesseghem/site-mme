@@ -8,14 +8,14 @@ import { hasLocale, href, locales, type Locale } from "@/lib/i18n";
 import {
   actions,
   contact,
-  equipe,
   maison,
   pagesProvisoires,
   pratique,
+  soins,
   type ActionSlug,
   type MaisonSlug,
-  type PoleSlug,
   type PratiqueSlug,
+  type SoinSlug,
 } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -25,12 +25,12 @@ export function generateStaticParams() {
 // Retrouve le titre de la page et sa rubrique à partir de l'adresse.
 function infosPage(dict: Dictionnaire, chemin: string[]) {
   const [rubrique, page] = chemin;
-  if (chemin.length === 2 && rubrique === "equipe" && (equipe as readonly string[]).includes(page))
-    return { titre: dict.poles[page as PoleSlug], rubrique: dict.nav.equipe };
+  if (chemin.length === 2 && rubrique === "soins" && (soins as readonly string[]).includes(page))
+    return { titre: dict.soins[page as SoinSlug], rubrique: dict.nav.soins };
   if (chemin.length === 2 && rubrique === "pratique" && (pratique as readonly string[]).includes(page))
-    return { titre: dict.pratique[page as PratiqueSlug], rubrique: dict.nav.pratique };
+    return { titre: dict.pratique[page as PratiqueSlug], rubrique: null };
   if (chemin.length === 2 && rubrique === "actions" && (actions as readonly string[]).includes(page))
-    return { titre: dict.actions[page as ActionSlug], rubrique: dict.nav.actions };
+    return { titre: dict.actions[page as ActionSlug], rubrique: dict.nav.activites };
   if (chemin.length === 1 && (maison as readonly string[]).includes(rubrique))
     return { titre: dict.maison[rubrique as MaisonSlug], rubrique: null };
   return null;

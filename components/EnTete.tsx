@@ -1,20 +1,22 @@
 "use client";
 
 // En-tête du site : bandeau d'infos, choix de la langue, menu principal (ordinateur et téléphone).
+// Menu proposé par le groupe de travail : Accueil · Les soins · L'équipe · Activités et La Récré · S'inscrire · Contact.
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { href, locales, type Locale } from "@/lib/i18n";
-import { actions, contact, equipe, pratique } from "@/lib/site";
+import { actions, contact, soins } from "@/lib/site";
 import type { Dictionnaire } from "@/content/dictionnaires";
 
 type Props = {
   lang: Locale;
-  dict: Pick<Dictionnaire, "commun" | "nav" | "poles" | "pratique" | "actions">;
+  dict: Pick<Dictionnaire, "commun" | "nav" | "soins" | "actions">;
 };
 
-type Groupe = "equipe" | "pratique" | "actions";
+type Lien = { href: string; texte: string };
+type Element = { type: "lien"; lien: Lien } | { type: "groupe"; cle: string; titre: string; liens: Lien[] };
 
 function Chevron() {
   return (
@@ -26,7 +28,7 @@ function Chevron() {
 
 export default function EnTete({ lang, dict }: Props) {
   const chemin = usePathname();
-  const [ouvert, setOuvert] = useState<Groupe | null>(null);
+  const [ouvert, setOuvert] = useState<string | null>(null);
   const [mobile, setMobile] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
@@ -60,22 +62,23 @@ export default function EnTete({ lang, dict }: Props) {
   // Même page, autre langue : /fr/contact -> /nl/contact
   const versLangue = (l: Locale) => chemin.replace(/^\/(fr|nl|en)(?=\/|$)/, `/${l}`);
 
-  const groupes: { cle: Groupe; titre: string; liens: { href: string; texte: string }[] }[] = [
+  const elements: Element[] = [
+    { type: "lien", lien: { href: href(lang), texte: dict.nav.accueil } },
     {
-      cle: "equipe",
-      titre: dict.nav.equipe,
-      liens: equipe.map((s) => ({ href: href(lang, `/equipe/${s}`), texte: dict.poles[s] })),
+      type: "groupe",
+      cle: "soins",
+      titre: dict.nav.soins,
+      liens: soins.map((s) => ({ href: href(lang, `/soins/${s}`), texte: dict.soins[s] })),
     },
+    { type: "lien", lien: { href: href(lang, "/equipe"), texte: dict.nav.equipe } },
     {
-      cle: "pratique",
-      titre: dict.nav.pratique,
-      liens: pratique.map((s) => ({ href: href(lang, `/pratique/${s}`), texte: dict.pratique[s] })),
-    },
-    {
-      cle: "actions",
-      titre: dict.nav.actions,
+      type: "groupe",
+      cle: "activites",
+      titre: dict.nav.activites,
       liens: actions.map((s) => ({ href: href(lang, `/actions/${s}`), texte: dict.actions[s] })),
     },
+    { type: "lien", lien: { href: href(lang, "/pratique/inscription"), texte: dict.nav.inscrire } },
+    { type: "lien", lien: { href: href(lang, "/contact"), texte: dict.nav.contact } },
   ];
 
   return (
@@ -112,30 +115,34 @@ export default function EnTete({ lang, dict }: Props) {
           </Link>
 
           <nav ref={navRef} className="nav-bureau" aria-label={dict.nav.principal}>
-            <Link href={href(lang)}>{dict.nav.accueil}</Link>
-            {groupes.map((g) => (
-              <div className="nav-groupe" key={g.cle}>
-                <button
-                  type="button"
-                  className="nav-bouton"
-                  aria-expanded={ouvert === g.cle}
-                  aria-controls={`sous-menu-${g.cle}`}
-                  onClick={() => setOuvert(ouvert === g.cle ? null : g.cle)}
-                >
-                  {g.titre} <Chevron />
-                </button>
-                {ouvert === g.cle && (
-                  <ul className="sous-menu" id={`sous-menu-${g.cle}`}>
-                    {g.liens.map((l) => (
-                      <li key={l.href}>
-                        <Link href={l.href}>{l.texte}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
-            <Link href={href(lang, "/contact")}>{dict.nav.contact}</Link>
+            {elements.map((el) =>
+              el.type === "lien" ? (
+                <Link key={el.lien.href} href={el.lien.href}>
+                  {el.lien.texte}
+                </Link>
+              ) : (
+                <div className="nav-groupe" key={el.cle}>
+                  <button
+                    type="button"
+                    className="nav-bouton"
+                    aria-expanded={ouvert === el.cle}
+                    aria-controls={`sous-menu-${el.cle}`}
+                    onClick={() => setOuvert(ouvert === el.cle ? null : el.cle)}
+                  >
+                    {el.titre} <Chevron />
+                  </button>
+                  {ouvert === el.cle && (
+                    <ul className="sous-menu" id={`sous-menu-${el.cle}`}>
+                      {el.liens.map((l) => (
+                        <li key={l.href}>
+                          <Link href={l.href}>{l.texte}</Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ),
+            )}
             <a href={contact.telephoneLien} className="bouton-tel" aria-label={`${dict.nav.appeler} : ${contact.telephone}`}>
               {contact.telephone}
             </a>
@@ -161,27 +168,27 @@ export default function EnTete({ lang, dict }: Props) {
 
         {mobile && (
           <nav id="menu-mobile" className="nav-mobile" aria-label={dict.nav.principal}>
-            <ul>
-              <li>
-                <Link href={href(lang)}>{dict.nav.accueil}</Link>
-              </li>
-            </ul>
-            {groupes.map((g) => (
-              <div key={g.cle}>
-                <span className="nav-mobile-titre">{g.titre}</span>
-                <ul>
-                  {g.liens.map((l) => (
-                    <li key={l.href}>
-                      <Link href={l.href}>{l.texte}</Link>
-                    </li>
-                  ))}
+            {elements.map((el) =>
+              el.type === "lien" ? (
+                <ul key={el.lien.href}>
+                  <li>
+                    <Link href={el.lien.href}>{el.lien.texte}</Link>
+                  </li>
                 </ul>
-              </div>
-            ))}
+              ) : (
+                <div key={el.cle}>
+                  <span className="nav-mobile-titre">{el.titre}</span>
+                  <ul>
+                    {el.liens.map((l) => (
+                      <li key={l.href}>
+                        <Link href={l.href}>{l.texte}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ),
+            )}
             <ul>
-              <li>
-                <Link href={href(lang, "/contact")}>{dict.nav.contact}</Link>
-              </li>
               <li>
                 <a href={contact.telephoneLien}>
                   {dict.nav.appeler} : {contact.telephone}
