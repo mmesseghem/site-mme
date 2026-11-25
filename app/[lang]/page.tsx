@@ -44,10 +44,10 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
           </div>
           <div className="hero-visuel">
             <Image
-              src="/images/photos/equipe-2025.jpg"
-              alt={a.altEquipe}
-              width={1024}
-              height={683}
+              src="/images/photos/facade-2026.jpg"
+              alt={dict.contact.altFacade}
+              width={1600}
+              height={1024}
               sizes="(max-width: 960px) 100vw, 560px"
               priority
             />
