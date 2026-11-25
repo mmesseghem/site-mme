@@ -8,7 +8,7 @@ import IconeSoin from "@/components/Icones";
 import MaisonAnimee from "@/components/MaisonAnimee";
 import StatutOuverture from "@/components/StatutOuverture";
 import { getDictionnaire } from "@/content/dictionnaires";
-import { hasLocale, href } from "@/lib/i18n";
+import { deuxPoints, hasLocale, href } from "@/lib/i18n";
 import { contact, soins } from "@/lib/site";
 
 function Fleche() {
@@ -53,7 +53,7 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
               sizes="(max-width: 960px) 100vw, 560px"
               priority
             />
-            <StatutOuverture t={a.statut} />
+            <StatutOuverture t={a.statut} lang={lang} />
           </div>
         </div>
       </section>
@@ -113,11 +113,15 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
           </div>
           <p className="urgence-numeros">
             <a href={contact.gardeLien}>
-              {a.libGarde} : <strong>{contact.garde}</strong>
+              {a.libGarde}
+              {deuxPoints(lang)}
+              <strong>{contact.garde}</strong>
             </a>
             <span aria-hidden="true">·</span>
             <a href={contact.urgencesLien}>
-              {a.libUrgences} : <strong>{contact.urgences}</strong>
+              {a.libUrgences}
+              {deuxPoints(lang)}
+              <strong>{contact.urgences}</strong>
             </a>
           </p>
         </div>

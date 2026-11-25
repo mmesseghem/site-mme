@@ -1,7 +1,9 @@
-// Calcule si l'accueil est ouvert en ce moment, à l'heure de Bruxelles.
+// Statut de l'accueil en temps réel, à l'heure de Bruxelles.
 // Fermé : en dehors de lundi–vendredi 8 h–19 h, et les jours fériés légaux belges.
 // Les fermetures exceptionnelles (congés, formation…) passent par le bandeau d'alerte.
 import { ouverture } from "@/lib/site";
+
+const JOUR_MS = 86_400_000;
 
 // Date de Pâques (algorithme de Meeus), mois de 1 à 12.
 function paques(annee: number): { mois: number; jour: number } {
@@ -22,14 +24,14 @@ function paques(annee: number): { mois: number; jour: number } {
   return { mois, jour };
 }
 
+const cle = (d: Date) =>
+  `${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+
 // Jours fériés légaux en Belgique, au format "MM-JJ".
 function joursFeries(annee: number): Set<string> {
   const p = paques(annee);
   const base = Date.UTC(annee, p.mois - 1, p.jour);
-  const decale = (jours: number) => {
-    const d = new Date(base + jours * 86_400_000);
-    return `${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
-  };
+  const decale = (jours: number) => cle(new Date(base + jours * JOUR_MS));
   return new Set([
     "01-01", // Nouvel An
     decale(1), // Lundi de Pâques
@@ -44,6 +46,13 @@ function joursFeries(annee: number): Set<string> {
   ]);
 }
 
+// Un jour du calendrier (sans heure), représenté à minuit UTC pour calculer sans souci de fuseau.
+function estJourOuvrable(jour: Date): boolean {
+  const semaine = jour.getUTCDay() === 0 ? 7 : jour.getUTCDay();
+  if (!(ouverture.jours as readonly number[]).includes(semaine)) return false;
+  return !joursFeries(jour.getUTCFullYear()).has(cle(jour));
+}
+
 // Lit la date et l'heure à Bruxelles, quel que soit le fuseau de l'appareil du visiteur.
 function maintenantABruxelles(date: Date) {
   const parts = new Intl.DateTimeFormat("en-GB", {
@@ -52,22 +61,40 @@ function maintenantABruxelles(date: Date) {
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",
+    minute: "2-digit",
     hourCycle: "h23",
-    weekday: "short",
   }).formatToParts(date);
-  const v = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
-  const jours: Record<string, number> = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 7 };
+  const v = (t: string) => Number(parts.find((p) => p.type === t)?.value ?? 0);
   return {
-    annee: Number(v("year")),
-    moisJour: `${v("month")}-${v("day")}`,
-    heure: Number(v("hour")),
-    jourSemaine: jours[v("weekday")] ?? 0,
+    jour: new Date(Date.UTC(v("year"), v("month") - 1, v("day"))),
+    minutes: v("hour") * 60 + v("minute"),
   };
 }
 
-export function estOuvert(date: Date = new Date()): boolean {
-  const m = maintenantABruxelles(date);
-  if (!(ouverture.jours as readonly number[]).includes(m.jourSemaine)) return false;
-  if (joursFeries(m.annee).has(m.moisJour)) return false;
-  return m.heure >= ouverture.debut && m.heure < ouverture.fin;
+export type Statut =
+  | { ouvert: true; fermeA: number; minutesRestantes: number }
+  | {
+      ouvert: false;
+      // Prochaine ouverture : dans combien de jours (0 = aujourd'hui), quel jour, à quelle heure.
+      prochaine: { dansJours: number; jour: Date; heure: number } | null;
+    };
+
+export function statutOuverture(date: Date = new Date()): Statut {
+  const { jour, minutes } = maintenantABruxelles(date);
+  const debut = ouverture.debut * 60;
+  const fin = ouverture.fin * 60;
+
+  if (estJourOuvrable(jour) && minutes >= debut && minutes < fin) {
+    return { ouvert: true, fermeA: ouverture.fin, minutesRestantes: fin - minutes };
+  }
+
+  // Cherche le prochain jour ouvrable (aujourd'hui si on est avant l'ouverture).
+  for (let k = 0; k <= 14; k++) {
+    const candidat = new Date(jour.getTime() + k * JOUR_MS);
+    if (k === 0 && minutes >= debut) continue;
+    if (estJourOuvrable(candidat)) {
+      return { ouvert: false, prochaine: { dansJours: k, jour: candidat, heure: ouverture.debut } };
+    }
+  }
+  return { ouvert: false, prochaine: null };
 }

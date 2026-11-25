@@ -407,6 +407,14 @@ img {
     right: -12px;
   }
 }
+.carte-horaires .statut-detail {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--encre);
+}
+.carte-horaires .statut-detail.bientot {
+  color: var(--bordeaux);
+}
 /* Fermé : point bordeaux et numéros de garde et d'urgence mis en avant */
 .carte-horaires.ferme strong::before {
   background: var(--bordeaux);
