@@ -7,7 +7,18 @@ Site vitrine de la MME (ASBL, Rue Esseghem 24, 1090 Jette), en Next.js, déploy�
 
 Le contexte complet (décisions, inventaire de l'ancien site, historique) est dans le projet Claude « Site internet » (fichier `Contexte_Projet_Site_MME_v2`). Il n'est volontairement pas copié dans ce dépôt public, car il contient des informations internes (comptes, domaines, piratage de l'ancien site). Les repères utiles au code sont résumés ci-dessous. Si une information manque ou semble dépassée, demande-la au lieu de la deviner.
 
-Commandes de construction et de vérification : à compléter une fois le projet créé (`npm run build`, `npm run lint`).
+Commandes utiles :
+- `npm run dev` : lance le site en local pour le regarder pendant le travail (http://localhost:3000).
+- `npm run lint` : vérifie que le code est propre.
+- `npm run build` : construit le site comme Vercel le fera ; doit passer sans erreur avant toute pull request.
+
+Organisation du code :
+- `app/[lang]/` : les pages, une version par langue (`/fr`, `/nl`, `/en`).
+- `content/dictionnaires.ts` : tous les textes du site dans les trois langues.
+- `lib/site.ts` : coordonnées et structure du menu.
+- `components/` : en-tête, pied de page et éléments réutilisés.
+- `app/globals.css` : la charte graphique (couleurs, polices, mise en page).
+- Version de Next.js récente : lis `AGENTS.md` et la documentation dans `node_modules/next/dist/docs/` avant d'écrire du code.
 
 ## Repères
 - **Coordonnées** : Rue Esseghem 24, 1090 Jette · 02 424 25 40 · fax 02 420 36 90 · info@mmesseghem.be · lundi–vendredi 8h–19h · en dehors des heures : garde bruxelloise 1733.
@@ -53,8 +64,10 @@ Prépare la modification, puis arrête-toi et demande son accord avant de la fus
 - le formulaire de médicaments ou tout formulaire qui recueille des données de santé ;
 - la connexion à l'espace d'administration, les droits d'accès, les comptes ;
 - la base de données Supabase et la conservation des données ;
-- les variables secrètes, les réglages Vercel ou GitHub, les workflows automatiques ;
+- les variables secrètes, les réglages Vercel ou GitHub, les workflows automatiques (sauf les vérifications automatiques, voir ci-dessous) ;
 - les domaines, DNS et adresses e-mail.
+
+Exception, accord permanent de Michaël : les **vérifications automatiques** (fichiers de `.github/workflows/` qui contrôlent le code : lint, construction, audit de sécurité, tests) peuvent être ajoutées ou ajustées sans lui demander, à condition qu'elles ne fassent que vérifier : droits en lecture seule, aucun secret utilisé, aucune publication ni déploiement. Ne jamais supprimer ou affaiblir une vérification existante sans son accord.
 
 Tout le reste (textes, pages, sections, images, mise en page) peut être fusionné une fois la liste de contrôle passée et les vérifications automatiques au vert.
 

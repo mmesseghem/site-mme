@@ -1,0 +1,839 @@
+/* Charte graphique de la Maison Médicale Esseghem (maquette version 1). */
+:root {
+  --bordeaux: #6c0e0f;
+  --bordeaux-fonce: #4e0a0b;
+  --vert: #189144;
+  --vert-texte: #137a39;
+  --vert-clair: #a8e2b9;
+  --gris: #5e5f62;
+  --encre: #2a1a1b;
+  --fond: #fbf9f8;
+  --fond-rose: #f6eeee;
+  --fond-vert: #eaf5ed;
+  --bordure: #ece5e4;
+  --blanc: #ffffff;
+  --titres: "Outfit", system-ui, sans-serif;
+  --texte: "Figtree", system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--texte);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--encre);
+  background: var(--fond);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--titres);
+  line-height: 1.1;
+  margin: 0;
+}
+
+a {
+  color: var(--bordeaux);
+}
+a:hover {
+  color: var(--bordeaux-fonce);
+}
+
+:focus-visible {
+  outline: 3px solid var(--vert);
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.lien-evitement {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--encre);
+  color: var(--blanc);
+}
+.lien-evitement:focus {
+  top: 12px;
+  color: var(--blanc);
+}
+
+.surtitre {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--vert-texte);
+}
+
+.bouton {
+  display: inline-block;
+  padding: 16px 26px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.bouton:hover {
+  transform: translateY(-2px);
+}
+.bouton-plein {
+  background: var(--bordeaux);
+  color: var(--blanc);
+}
+.bouton-plein:hover {
+  color: var(--blanc);
+  box-shadow: 0 14px 30px rgba(108, 14, 15, 0.25);
+}
+.bouton-contour {
+  border: 1.5px solid var(--encre);
+  color: var(--encre);
+}
+.bouton-contour:hover {
+  color: var(--encre);
+}
+.bouton-sombre {
+  background: var(--encre);
+  color: var(--blanc);
+}
+.bouton-sombre:hover {
+  color: var(--blanc);
+}
+
+/* Emplacement provisoire pour une vraie photo de la MME */
+.photo-a-venir {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--gris);
+  background: var(--fond-rose);
+}
+
+/* ---------- Bandeau infos ---------- */
+.bandeau {
+  background: var(--encre);
+  color: var(--fond-rose);
+  font-size: 14px;
+}
+.bandeau .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 40px;
+}
+.bandeau-infos {
+  display: flex;
+  gap: 24px;
+}
+.langues {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 0 auto;
+  padding: 0;
+  list-style: none;
+}
+.langues a {
+  display: block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--fond-rose);
+  text-decoration: none;
+}
+.langues a[aria-current="true"] {
+  background: var(--fond-rose);
+  color: var(--encre);
+}
+
+/* ---------- En-tête ---------- */
+.entete {
+  position: relative;
+  z-index: 20;
+  background: var(--blanc);
+  border-bottom: 1px solid var(--bordure);
+}
+.entete-barre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 84px;
+}
+.marque {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--gris);
+  text-decoration: none;
+}
+.marque img {
+  height: 46px;
+  width: auto;
+}
+.marque-texte {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  font-family: var(--titres);
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+.marque-texte span:first-child {
+  font-weight: 700;
+  letter-spacing: 0.22em;
+}
+.marque-texte span:last-child {
+  font-weight: 500;
+  letter-spacing: 0.32em;
+}
+
+.nav-bureau {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.nav-bureau > a,
+.nav-bouton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--encre);
+  text-decoration: none;
+  cursor: pointer;
+}
+.nav-bureau > a:hover,
+.nav-bouton:hover,
+.nav-bouton[aria-expanded="true"] {
+  color: var(--bordeaux);
+}
+.nav-groupe {
+  position: relative;
+}
+.sous-menu {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: 290px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(42, 26, 27, 0.12);
+}
+.sous-menu a,
+.nav-mobile a {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: var(--encre);
+  text-decoration: none;
+}
+.sous-menu a:hover,
+.nav-mobile a:hover {
+  background: var(--fond-rose);
+  color: var(--bordeaux);
+}
+.nav-bureau > .bouton-tel {
+  margin-left: 8px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--bordeaux);
+  color: var(--blanc);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-bureau > .bouton-tel:hover {
+  color: var(--blanc);
+  background: var(--bordeaux-fonce);
+}
+
+.burger {
+  display: none;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  background: none;
+  color: var(--encre);
+  cursor: pointer;
+}
+.nav-mobile {
+  padding: 12px 20px 20px;
+  border-top: 1px solid var(--bordure);
+  font-weight: 600;
+}
+.nav-mobile ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nav-mobile-titre {
+  display: block;
+  padding: 14px 14px 4px;
+  font-size: 13px;
+  color: var(--gris);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Accueil ---------- */
+.hero {
+  background: var(--blanc);
+}
+.grille-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 56px;
+  align-items: center;
+}
+.hero .grille-2 {
+  padding-top: 72px;
+  padding-bottom: 80px;
+}
+.hero-texte {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.hero h1,
+.titre-page {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.hero p {
+  margin: 0;
+  max-width: 34rem;
+  font-size: 19px;
+  color: var(--gris);
+}
+.boutons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.hero-visuel {
+  position: relative;
+}
+.hero-visuel .photo-a-venir,
+.hero-visuel img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: 28px;
+  object-fit: cover;
+}
+.carte-horaires {
+  position: absolute;
+  left: -12px;
+  bottom: -32px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 240px;
+  padding: 20px 24px;
+  border-radius: 18px;
+  background: var(--blanc);
+  box-shadow: 0 18px 40px rgba(42, 26, 27, 0.14);
+}
+.carte-horaires strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.carte-horaires strong::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--vert);
+}
+.carte-horaires span {
+  font-size: 15px;
+  color: var(--gris);
+}
+
+.section {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+/* Cartes numérotées d'accès rapide (repris de la version premium) */
+.acces {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 72px 0 24px;
+  list-style: none;
+}
+.acces a {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  padding: 32px;
+  border: 1.5px solid var(--bordure);
+  border-radius: 24px;
+  background: var(--blanc);
+  color: var(--encre);
+  text-decoration: none;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.acces a:hover {
+  transform: translateY(-4px);
+  border-color: var(--bordeaux);
+  box-shadow: 0 22px 44px rgba(42, 26, 27, 0.1);
+}
+.acces .acces-mis-en-avant a {
+  background: var(--bordeaux);
+  border-color: var(--bordeaux);
+  color: var(--blanc);
+}
+.acces-numero {
+  font-family: var(--titres);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--vert-texte);
+}
+.acces-mis-en-avant .acces-numero {
+  color: var(--vert-clair);
+}
+.acces-titre {
+  font-family: var(--titres);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+.acces-texte {
+  font-size: 15px;
+  color: var(--gris);
+}
+.acces-mis-en-avant .acces-texte {
+  color: #f2e3e3;
+}
+
+.entete-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.entete-section h2 {
+  margin-top: 8px;
+  font-size: 40px;
+}
+.entete-section p {
+  max-width: 28rem;
+  margin: 0;
+  color: var(--gris);
+}
+
+.grille-poles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.grille-poles a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 22px 24px;
+  border: 1.5px solid var(--bordure);
+  border-radius: 16px;
+  background: var(--blanc);
+  color: var(--encre);
+  font-weight: 600;
+  text-decoration: none;
+}
+.grille-poles a:hover {
+  border-color: var(--bordeaux);
+  color: var(--bordeaux);
+}
+
+/* Notre philosophie (repris de la version premium, avec l'animation de la maison) */
+.philosophie {
+  position: relative;
+  overflow: hidden;
+  background: var(--bordeaux);
+  color: var(--fond-rose);
+}
+.philosophie .wrap {
+  position: relative;
+  padding-top: 112px;
+  padding-bottom: 112px;
+}
+.philosophie .surtitre {
+  color: var(--vert-clair);
+}
+.philosophie-maison {
+  position: absolute;
+  right: -120px;
+  top: -60px;
+  width: 640px;
+  height: 640px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+.philosophie-maison path {
+  stroke-dasharray: 2400;
+  stroke-dashoffset: 2400;
+}
+.philosophie-maison.visible path {
+  animation: dessin 2.6s 0.2s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+}
+@keyframes dessin {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.philosophie-citation {
+  max-width: 62rem;
+  margin: 28px 0 0;
+  font-family: var(--titres);
+  font-size: 46px;
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--blanc);
+}
+.philosophie-citation em {
+  font-style: normal;
+  color: var(--vert-clair);
+}
+.valeurs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+  margin: 64px 0 0;
+  padding: 32px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+.valeurs dt {
+  font-family: var(--titres);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--blanc);
+}
+.valeurs dd {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: #e9d6d6;
+}
+.philosophie-lien {
+  display: inline-block;
+  margin-top: 40px;
+  font-weight: 600;
+  color: var(--blanc);
+}
+.philosophie-lien:hover {
+  color: var(--vert-clair);
+}
+
+/* Nous trouver (repris de la version premium) */
+.trouver {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  overflow: hidden;
+  border-radius: 32px;
+  background: var(--blanc);
+}
+.trouver .photo-a-venir,
+.trouver img {
+  min-height: 420px;
+  height: 100%;
+  object-fit: cover;
+}
+.trouver-infos {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+  padding: 56px;
+}
+.trouver-infos h2 {
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+.trouver-infos dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+}
+.trouver-infos dt {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gris);
+}
+.trouver-infos dd {
+  margin: 0;
+  font-weight: 600;
+}
+.trouver-infos dd a {
+  text-decoration: none;
+}
+.trouver-infos .bouton {
+  align-self: flex-start;
+}
+
+.rejoindre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 48px;
+  border-radius: 28px;
+  background: var(--fond-vert);
+}
+.rejoindre h2 {
+  margin-bottom: 8px;
+  font-size: 32px;
+  line-height: 1.15;
+}
+.rejoindre p {
+  margin: 0;
+  color: var(--gris);
+}
+
+/* ---------- Pages intérieures ---------- */
+.page-entete {
+  background: var(--blanc);
+  border-bottom: 1px solid var(--bordure);
+}
+.page-entete .wrap {
+  padding-top: 48px;
+  padding-bottom: 56px;
+}
+.fil-ariane {
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--gris);
+}
+.fil-ariane ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fil-ariane li + li::before {
+  content: "/";
+  margin-right: 6px;
+}
+.encadre {
+  max-width: 44rem;
+  padding: 24px 28px;
+  border-radius: 16px;
+  background: var(--fond-rose);
+}
+.encadre p {
+  margin: 0 0 12px;
+}
+.cartes-contact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-content: start;
+  margin: 0;
+}
+.cartes-contact div {
+  padding: 24px;
+  border: 1px solid var(--bordure);
+  border-radius: 18px;
+  background: var(--blanc);
+}
+.cartes-contact dt {
+  font-weight: 700;
+}
+.cartes-contact dd {
+  margin: 6px 0 0;
+  color: var(--gris);
+}
+.contact-visuel .photo-a-venir {
+  aspect-ratio: 3 / 2;
+  border-radius: 20px;
+}
+.contact-visuel p {
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: var(--gris);
+}
+
+/* ---------- Pied de page ---------- */
+.pied {
+  background: var(--encre);
+  color: #e6d9d9;
+  font-size: 15px;
+}
+.pied a {
+  color: #e6d9d9;
+}
+.pied a:hover {
+  color: var(--blanc);
+}
+.pied-colonnes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 48px;
+  padding-top: 56px;
+  padding-bottom: 32px;
+}
+.pied-colonne {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 22rem;
+}
+.pied-colonne ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pied-nom {
+  font-family: var(--titres);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--blanc);
+}
+.pied-titre {
+  font-weight: 700;
+  color: var(--blanc);
+}
+.pied-bas {
+  padding-bottom: 28px;
+  font-size: 13px;
+  color: #c4afaf;
+}
+.pied-bas a {
+  color: #c4afaf;
+}
+
+/* ---------- Téléphone et tablette ---------- */
+@media (max-width: 960px) {
+  .nav-bureau {
+    display: none;
+  }
+  .burger {
+    display: flex;
+  }
+  .bandeau-infos {
+    display: none;
+  }
+  .wrap {
+    padding: 0 20px;
+  }
+  .grille-2 {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+  .acces,
+  .grille-poles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hero h1,
+  .titre-page {
+    font-size: 38px;
+  }
+  .entete-section h2,
+  .trouver-infos h2 {
+    font-size: 32px;
+  }
+  .philosophie-citation {
+    font-size: 30px;
+  }
+  .philosophie .wrap {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  .trouver-infos {
+    padding: 32px 24px;
+  }
+  .trouver-infos dl,
+  .cartes-contact {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rejoindre {
+    padding: 32px 24px;
+  }
+  .carte-horaires {
+    left: 12px;
+  }
+}
+
+@media (min-width: 961px) and (max-width: 1100px) {
+  .nav-bureau > .bouton-tel {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .philosophie-maison path {
+    stroke-dashoffset: 0;
+  }
+}
