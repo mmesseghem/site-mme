@@ -8,7 +8,14 @@ export const contact = {
   fax: "02 420 36 90",
   email: "info@mmesseghem.be",
   garde: "1733",
+  gardeLien: "tel:1733",
+  urgences: "112",
+  urgencesLien: "tel:112",
 } as const;
+
+// Heures d'ouverture de l'accueil (heure de Bruxelles) : lundi à vendredi, 8 h à 19 h.
+// Les jours fériés légaux belges sont considérés comme fermés (voir lib/horaires.ts).
+export const ouverture = { jours: [1, 2, 3, 4, 5], debut: 8, fin: 19 } as const;
 
 // Structure du menu (version 1 de la maquette).
 // Les adresses sont les mêmes dans les trois langues ; seuls les libellés changent.

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import MaisonAnimee from "@/components/MaisonAnimee";
+import StatutOuverture from "@/components/StatutOuverture";
 import { getDictionnaire } from "@/content/dictionnaires";
 import { hasLocale, href } from "@/lib/i18n";
 import { contact, equipe } from "@/lib/site";
@@ -50,11 +51,7 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
               sizes="(max-width: 960px) 100vw, 560px"
               priority
             />
-            <p className="carte-horaires">
-              <strong>{a.horairesTitre}</strong>
-              <span>{a.horaires}</span>
-              <span>{a.garde}</span>
-            </p>
+            <StatutOuverture t={a.statut} lang={lang} />
           </div>
         </div>
       </section>
