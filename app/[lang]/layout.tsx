@@ -56,7 +56,8 @@ export default async function LayoutLangue({ children, params }: LayoutProps<"/[
           dict={{
             commun: dict.commun,
             nav: dict.nav,
-            soins: dict.soins,
+            poles: dict.poles,
+            pratique: dict.pratique,
             actions: dict.actions,
           }}
         />

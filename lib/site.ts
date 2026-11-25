@@ -15,20 +15,27 @@ export const contact = {
   urgencesLien: "tel:112",
 } as const;
 
+// Heures d'ouverture de l'accueil (heure de Bruxelles) : lundi à vendredi, 8 h à 19 h.
+// Les jours fériés légaux belges sont considérés comme fermés (voir lib/horaires.ts).
+export const ouverture = { jours: [1, 2, 3, 4, 5], debut: 8, fin: 19 } as const;
+
 // Bandeau d'alerte en haut de toutes les pages (fermeture exceptionnelle, congés…).
 // Mettre null pour le masquer. Plus tard, Séverine pourra le gérer depuis l'espace d'administration.
 export const alerte: Record<Locale, string> | null = null;
 
-// Structure du menu (proposition du groupe de travail).
+// Structure du menu (version 1 de la maquette).
 // Les adresses sont les mêmes dans les trois langues ; seuls les libellés changent.
-export const soins = [
+export const equipe = [
+  "accueil",
   "medecine-generale",
-  "soins-infirmiers",
   "kinesitherapie",
-  "psychologie",
+  "pole-infirmier",
+  "psychologue",
+  "assistante-sociale",
   "logopedie",
   "ergotherapie",
-  "aide-sociale",
+  "actrices-en-sante",
+  "pole-administratif",
 ] as const;
 
 export const pratique = [
@@ -44,23 +51,34 @@ export const actions = [
   "psychomotricite-relationnelle",
 ] as const;
 
-// Pages de la maison médicale accessibles depuis le pied de page.
+// Pages de la maison médicale accessibles depuis l'accueil et le pied de page.
 export const maison = [
-  "equipe",
   "philosophie",
   "historique",
   "offres-emploi",
   "confidentialite",
 ] as const;
 
-export type SoinSlug = (typeof soins)[number];
+export type PoleSlug = (typeof equipe)[number];
 export type PratiqueSlug = (typeof pratique)[number];
 export type ActionSlug = (typeof actions)[number];
 export type MaisonSlug = (typeof maison)[number];
 
+// « Nos soins » sur l'accueil : chaque soin mène à la page du pôle correspondant.
+export const soins = [
+  "medecine-generale",
+  "pole-infirmier",
+  "kinesitherapie",
+  "psychologue",
+  "logopedie",
+  "ergotherapie",
+  "assistante-sociale",
+] as const satisfies readonly PoleSlug[];
+export type SoinSlug = (typeof soins)[number];
+
 // Toutes les pages provisoires, avec leur adresse.
 export const pagesProvisoires: { segments: string[] }[] = [
-  ...soins.map((s) => ({ segments: ["soins", s] })),
+  ...equipe.map((s) => ({ segments: ["equipe", s] })),
   ...pratique.map((s) => ({ segments: ["pratique", s] })),
   ...actions.map((s) => ({ segments: ["actions", s] })),
   ...maison.map((s) => ({ segments: [s] })),

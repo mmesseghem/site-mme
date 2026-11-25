@@ -1,15 +1,14 @@
 // Textes du site dans les trois langues.
 // Le français est la référence : le néerlandais et l'anglais doivent avoir exactement les mêmes clés.
 // Relecture par un néerlandophone conseillée pour les pages clés.
-// Les textes marqués « à compléter » attendent une information de l'équipe : ne pas les inventer.
 import type { Locale } from "@/lib/i18n";
-import type { ActionSlug, MaisonSlug, PratiqueSlug, SoinSlug } from "@/lib/site";
+import type { ActionSlug, MaisonSlug, PoleSlug, PratiqueSlug } from "@/lib/site";
 
 const fr = {
   meta: {
     titre: "Maison Médicale Esseghem — Jette",
     description:
-      "Maison médicale de quartier à Jette : médecine générale, soins infirmiers, kinésithérapie, psychologie, logopédie, ergothérapie et aide sociale.",
+      "Maison médicale de quartier à Jette : médecine générale, kinésithérapie, soins infirmiers, psychologie, logopédie, ergothérapie et accompagnement social.",
   },
   commun: {
     allerAuContenu: "Aller au contenu",
@@ -24,49 +23,67 @@ const fr = {
   nav: {
     principal: "Menu principal",
     accueil: "Accueil",
-    soins: "Les soins",
     equipe: "L'équipe",
-    activites: "Activités et La Récré",
-    inscrire: "S'inscrire",
-    contact: "Contact",
+    pratique: "En pratique",
+    actions: "Nos actions en santé",
+    contact: "Contacts",
     ouvrirMenu: "Ouvrir le menu",
     fermerMenu: "Fermer le menu",
     appeler: "Appeler la maison médicale",
   },
-  soins: {
+  poles: {
+    accueil: "Accueil",
     "medecine-generale": "Médecine générale",
-    "soins-infirmiers": "Soins infirmiers",
     kinesitherapie: "Kinésithérapie",
-    psychologie: "Psychologie",
+    "pole-infirmier": "Pôle infirmier",
+    psychologue: "Psychologue",
+    "assistante-sociale": "Assistante sociale",
     logopedie: "Logopédie",
     ergotherapie: "Ergothérapie",
-    "aide-sociale": "Aide sociale",
-  } satisfies Record<SoinSlug, string>,
+    "actrices-en-sante": "Actrices en santé",
+    "pole-administratif": "Pôle administratif",
+  } satisfies Record<PoleSlug, string>,
   pratique: {
-    "demande-medicaments": "Demander un médicament",
+    "demande-medicaments": "Demande de médicament(s)",
     inscription: "S'inscrire à la maison médicale",
-    faq: "Questions fréquentes",
+    faq: "FAQ",
     newsletter: "Newsletter",
   } satisfies Record<PratiqueSlug, string>,
   actions: {
     planning: "Planning des activités",
-    "la-recre": "La Récré",
+    "la-recre": "La récré",
     "psychomotricite-relationnelle": "Psychomotricité relationnelle",
   } satisfies Record<ActionSlug, string>,
   maison: {
-    equipe: "L'équipe",
     philosophie: "Notre philosophie",
     historique: "Historique",
     "offres-emploi": "Offres d'emploi",
     confidentialite: "Politique de confidentialité",
   } satisfies Record<MaisonSlug, string>,
   accueil: {
+    surtitre: "Maison médicale de quartier à Jette",
     titre: "Une maison médicale à votre écoute",
     texte: "Des soins de qualité, une approche humaine, pour tous les âges de la vie.",
     boutonAppeler: "Appeler : 02 424 25 40",
     boutonMedic: "Demander un médicament",
-    horairesLigne: "Accueil et téléphone : du lundi au vendredi, de 8 h à 19 h",
     altFacade: "Façade de la maison médicale avec son enseigne, rue Esseghem 24",
+    statut: {
+      horairesTitre: "Ouvert du lundi au vendredi",
+      ouvertMaintenant: "Ouvert maintenant",
+      fermeActuellement: "Fermé actuellement",
+      horairesSemaine: "Lundi au vendredi · 8h00 – 19h00",
+      garde: "En dehors des heures : garde au 1733",
+      libGarde: "Médecin de garde",
+      libUrgences: "Urgences",
+    },
+    acces: [
+      { titre: "Prendre rendez-vous", texte: "Par téléphone au 02 424 25 40, du lundi au vendredi." },
+      {
+        titre: "Demander un médicament",
+        texte: "Pour vos traitements chroniques. Prescription disponible sur votre carte d'identité sous 72 h.",
+      },
+      { titre: "Devenir patient", texte: "Habitants du quartier : découvrez comment vous inscrire à la maison médicale." },
+    ],
     libAdresse: "Adresse",
     lienAcces: "Plan et accès",
     aCompleterAcces: "Bus, parking et accès PMR : à compléter",
@@ -78,15 +95,6 @@ const fr = {
     urgenceTexte: "Hors des heures d'ouverture, le week-end et les jours fériés.",
     libGarde: "Médecin de garde",
     libUrgences: "Urgences",
-    souhaiteTitre: "Je souhaite…",
-    souhaits: [
-      {
-        titre: "S'inscrire à la maison médicale",
-        texte: "Habitants du quartier : découvrez comment vous inscrire.",
-      },
-      { titre: "Demander un médicament", texte: "Prescription sous 72 h." },
-      { titre: "Lire les questions fréquentes", texte: "Les réponses aux questions les plus courantes." },
-    ],
     soinsTitre: "Nos soins",
     forfaitTitre: "Soins au forfait",
     forfaitTexte:
@@ -139,7 +147,7 @@ const nl: Dictionnaire = {
   meta: {
     titre: "Maison Médicale Esseghem — Jette",
     description:
-      "Wijkgezondheidscentrum in Jette: huisartsgeneeskunde, verpleegkundige zorg, kinesitherapie, psychologie, logopedie, ergotherapie en maatschappelijk werk.",
+      "Wijkgezondheidscentrum in Jette: huisartsgeneeskunde, kinesitherapie, verpleegkundige zorg, psychologie, logopedie en sociale begeleiding.",
   },
   commun: {
     allerAuContenu: "Naar de inhoud",
@@ -154,49 +162,67 @@ const nl: Dictionnaire = {
   nav: {
     principal: "Hoofdmenu",
     accueil: "Home",
-    soins: "Zorgaanbod",
     equipe: "Het team",
-    activites: "Activiteiten en La Récré",
-    inscrire: "Inschrijven",
+    pratique: "Praktisch",
+    actions: "Onze gezondheidsacties",
     contact: "Contact",
     ouvrirMenu: "Menu openen",
     fermerMenu: "Menu sluiten",
     appeler: "Het wijkgezondheidscentrum bellen",
   },
-  soins: {
+  poles: {
+    accueil: "Onthaal",
     "medecine-generale": "Huisartsgeneeskunde",
-    "soins-infirmiers": "Verpleegkundige zorg",
     kinesitherapie: "Kinesitherapie",
-    psychologie: "Psychologie",
+    "pole-infirmier": "Verpleegkundig team",
+    psychologue: "Psycholoog",
+    "assistante-sociale": "Maatschappelijk assistent",
     logopedie: "Logopedie",
     ergotherapie: "Ergotherapie",
-    "aide-sociale": "Maatschappelijk werk",
+    "actrices-en-sante": "Gezondheidswerkers",
+    "pole-administratif": "Administratief team",
   },
   pratique: {
-    "demande-medicaments": "Geneesmiddel aanvragen",
+    "demande-medicaments": "Aanvraag geneesmiddel(en)",
     inscription: "Inschrijven in het wijkgezondheidscentrum",
     faq: "Veelgestelde vragen",
     newsletter: "Nieuwsbrief",
   },
   actions: {
     planning: "Activiteitenplanning",
-    "la-recre": "La Récré",
+    "la-recre": "La récré",
     "psychomotricite-relationnelle": "Relationele psychomotoriek",
   },
   maison: {
-    equipe: "Het team",
     philosophie: "Onze visie",
     historique: "Geschiedenis",
     "offres-emploi": "Vacatures",
     confidentialite: "Privacybeleid",
   },
   accueil: {
+    surtitre: "Wijkgezondheidscentrum in Jette",
     titre: "Een wijkgezondheidscentrum dat naar u luistert",
     texte: "Kwaliteitsvolle zorg met een menselijke aanpak, voor alle leeftijden.",
     boutonAppeler: "Bellen: 02 424 25 40",
     boutonMedic: "Geneesmiddel aanvragen",
-    horairesLigne: "Onthaal en telefoon: van maandag tot vrijdag, van 8 tot 19 uur",
     altFacade: "Gevel van het wijkgezondheidscentrum met het uithangbord, Rue Esseghem 24",
+    statut: {
+      horairesTitre: "Open van maandag tot vrijdag",
+      ouvertMaintenant: "Nu open",
+      fermeActuellement: "Momenteel gesloten",
+      horairesSemaine: "Maandag tot vrijdag · 8u00 – 19u00",
+      garde: "Buiten de openingsuren: wachtdienst via 1733",
+      libGarde: "Huisarts van wacht",
+      libUrgences: "Noodgevallen",
+    },
+    acces: [
+      { titre: "Afspraak maken", texte: "Telefonisch via 02 424 25 40, van maandag tot vrijdag." },
+      {
+        titre: "Geneesmiddel aanvragen",
+        texte: "Voor uw chronische behandelingen. Het voorschrift is binnen 72 uur beschikbaar via uw identiteitskaart.",
+      },
+      { titre: "Patiënt worden", texte: "Woont u in de wijk? Ontdek hoe u zich inschrijft in het wijkgezondheidscentrum." },
+    ],
     libAdresse: "Adres",
     lienAcces: "Kaart en bereikbaarheid",
     aCompleterAcces: "Bus, parkeren en toegankelijkheid voor personen met een beperking: aan te vullen",
@@ -208,15 +234,6 @@ const nl: Dictionnaire = {
     urgenceTexte: "Buiten de openingsuren, in het weekend en op feestdagen.",
     libGarde: "Huisarts van wacht",
     libUrgences: "Noodgevallen",
-    souhaiteTitre: "Ik wil…",
-    souhaits: [
-      {
-        titre: "Me inschrijven in het wijkgezondheidscentrum",
-        texte: "Woont u in de wijk? Ontdek hoe u zich inschrijft.",
-      },
-      { titre: "Een geneesmiddel aanvragen", texte: "Voorschrift binnen 72 uur." },
-      { titre: "De veelgestelde vragen lezen", texte: "Antwoorden op de meest gestelde vragen." },
-    ],
     soinsTitre: "Ons zorgaanbod",
     forfaitTitre: "Zorg via het forfait",
     forfaitTexte:
@@ -267,7 +284,7 @@ const en: Dictionnaire = {
   meta: {
     titre: "Maison Médicale Esseghem — Jette",
     description:
-      "Neighbourhood health centre in Jette: general practice, nursing, physiotherapy, psychology, speech therapy, occupational therapy and social support.",
+      "Neighbourhood health centre in Jette: general practice, physiotherapy, nursing, psychology, speech therapy and social support.",
   },
   commun: {
     allerAuContenu: "Skip to content",
@@ -282,49 +299,67 @@ const en: Dictionnaire = {
   nav: {
     principal: "Main menu",
     accueil: "Home",
-    soins: "Our services",
     equipe: "Our team",
-    activites: "Activities & La Récré",
-    inscrire: "Register",
+    pratique: "Practical information",
+    actions: "Health activities",
     contact: "Contact",
     ouvrirMenu: "Open menu",
     fermerMenu: "Close menu",
     appeler: "Call the health centre",
   },
-  soins: {
+  poles: {
+    accueil: "Reception",
     "medecine-generale": "General practice",
-    "soins-infirmiers": "Nursing care",
     kinesitherapie: "Physiotherapy",
-    psychologie: "Psychology",
+    "pole-infirmier": "Nursing",
+    psychologue: "Psychologist",
+    "assistante-sociale": "Social worker",
     logopedie: "Speech therapy",
     ergotherapie: "Occupational therapy",
-    "aide-sociale": "Social support",
+    "actrices-en-sante": "Community health workers",
+    "pole-administratif": "Administration",
   },
   pratique: {
-    "demande-medicaments": "Request medication",
-    inscription: "Register with the health centre",
-    faq: "Frequently asked questions",
+    "demande-medicaments": "Medication request",
+    inscription: "Register as a patient",
+    faq: "FAQ",
     newsletter: "Newsletter",
   },
   actions: {
     planning: "Activity schedule",
-    "la-recre": "La Récré",
+    "la-recre": "La récré",
     "psychomotricite-relationnelle": "Relational psychomotor therapy",
   },
   maison: {
-    equipe: "Our team",
     philosophie: "Our philosophy",
     historique: "History",
     "offres-emploi": "Job vacancies",
     confidentialite: "Privacy policy",
   },
   accueil: {
+    surtitre: "Neighbourhood health centre in Jette",
     titre: "A health centre that listens to you",
     texte: "Quality care with a human approach, for all ages.",
     boutonAppeler: "Call: 02 424 25 40",
     boutonMedic: "Request medication",
-    horairesLigne: "Reception and phone: Monday to Friday, 8 am to 7 pm",
     altFacade: "Front of the health centre with its sign, Rue Esseghem 24",
+    statut: {
+      horairesTitre: "Open Monday to Friday",
+      ouvertMaintenant: "Open now",
+      fermeActuellement: "Currently closed",
+      horairesSemaine: "Monday to Friday · 8 am – 7 pm",
+      garde: "Outside opening hours: on-call service on 1733",
+      libGarde: "On-call doctor",
+      libUrgences: "Emergencies",
+    },
+    acces: [
+      { titre: "Book an appointment", texte: "By phone on 02 424 25 40, Monday to Friday." },
+      {
+        titre: "Request medication",
+        texte: "For your ongoing treatments. Your prescription is available on your ID card within 72 hours.",
+      },
+      { titre: "Become a patient", texte: "Live in the neighbourhood? Find out how to register with the health centre." },
+    ],
     libAdresse: "Address",
     lienAcces: "Map and access",
     aCompleterAcces: "Bus, parking and wheelchair access: to be completed",
@@ -336,15 +371,6 @@ const en: Dictionnaire = {
     urgenceTexte: "Outside opening hours, at weekends and on public holidays.",
     libGarde: "On-call doctor",
     libUrgences: "Emergencies",
-    souhaiteTitre: "I would like to…",
-    souhaits: [
-      {
-        titre: "Register with the health centre",
-        texte: "Live in the neighbourhood? Find out how to register.",
-      },
-      { titre: "Request medication", texte: "Prescription within 72 hours." },
-      { titre: "Read the frequently asked questions", texte: "Answers to the most common questions." },
-    ],
     soinsTitre: "Our services",
     forfaitTitre: "Care under the flat-fee system",
     forfaitTexte:

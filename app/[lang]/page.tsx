@@ -1,11 +1,12 @@
-// Page d'accueil — version B, d'après le plan du groupe de travail :
-// accueil, infos pratiques, urgences, « Je souhaite… », nos soins, forfait, activités et La Récré.
-// Charte et style de la maquette version 1 ; « Notre philosophie » gardée en version courte.
+// Page d'accueil — version B : en-tête et cartes d'accès rapide de la version A,
+// puis les sections proposées par le groupe de travail : infos pratiques, urgences,
+// nos soins, soins au forfait, activités et La Récré. « Notre philosophie » en version courte.
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import IconeSoin from "@/components/Icones";
 import MaisonAnimee from "@/components/MaisonAnimee";
+import StatutOuverture from "@/components/StatutOuverture";
 import { getDictionnaire } from "@/content/dictionnaires";
 import { hasLocale, href } from "@/lib/i18n";
 import { contact, soins } from "@/lib/site";
@@ -24,17 +25,14 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
   const dict = getDictionnaire(lang);
   const a = dict.accueil;
 
-  const liensSouhaits = [
-    href(lang, "/pratique/inscription"),
-    href(lang, "/pratique/demande-medicaments"),
-    href(lang, "/pratique/faq"),
-  ];
+  const liensAcces = [contact.telephoneLien, href(lang, "/pratique/demande-medicaments"), href(lang, "/pratique/inscription")];
 
   return (
     <>
       <section className="hero">
         <div className="wrap grille-2">
           <div className="hero-texte">
+            <span className="surtitre">{a.surtitre}</span>
             <h1>{a.titre}</h1>
             <p>{a.texte}</p>
             <div className="boutons">
@@ -45,7 +43,6 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
                 {a.boutonMedic}
               </Link>
             </div>
-            <p className="hero-horaires">{a.horairesLigne}</p>
           </div>
           <div className="hero-visuel">
             <Image
@@ -56,9 +53,30 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
               sizes="(max-width: 960px) 100vw, 560px"
               priority
             />
+            <StatutOuverture t={a.statut} />
           </div>
         </div>
       </section>
+
+      <div className="wrap">
+        <ul className="acces">
+          {a.acces.map((carte, i) => {
+            const lien = liensAcces[i];
+            const contenu = (
+              <>
+                <span className="acces-numero">{String(i + 1).padStart(2, "0")}</span>
+                <span className="acces-titre">{carte.titre}</span>
+                <span className="acces-texte">{carte.texte}</span>
+              </>
+            );
+            return (
+              <li key={carte.titre} className={i === 1 ? "acces-mis-en-avant" : undefined}>
+                {lien.startsWith("tel:") ? <a href={lien}>{contenu}</a> : <Link href={lien}>{contenu}</Link>}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
 
       <section className="wrap infos-pratiques" aria-label={dict.pied.colPratique}>
         <div>
@@ -105,35 +123,18 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
         </div>
       </section>
 
-      <section className="wrap section" aria-labelledby="titre-souhaite">
-        <h2 id="titre-souhaite" className="titre-section">
-          {a.souhaiteTitre}
-        </h2>
-        <ul className="acces" style={{ paddingTop: 0 }}>
-          {a.souhaits.map((s, i) => (
-            <li key={s.titre} className={i === 1 ? "acces-mis-en-avant" : undefined}>
-              <Link href={liensSouhaits[i]}>
-                <span className="acces-numero">{String(i + 1).padStart(2, "0")}</span>
-                <span className="acces-titre">{s.titre}</span>
-                <span className="acces-texte">{s.texte}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="wrap" aria-labelledby="titre-soins">
+      <section className="wrap section" aria-labelledby="titre-soins">
         <h2 id="titre-soins" className="titre-section">
           {a.soinsTitre}
         </h2>
         <ul className="grille-soins">
           {soins.map((s) => (
             <li key={s}>
-              <Link href={href(lang, `/soins/${s}`)}>
+              <Link href={href(lang, `/equipe/${s}`)}>
                 <span className="soin-icone">
                   <IconeSoin soin={s} />
                 </span>
-                <span className="soin-nom">{dict.soins[s]}</span>
+                <span className="soin-nom">{dict.poles[s]}</span>
                 <Fleche />
               </Link>
             </li>
@@ -141,7 +142,7 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
         </ul>
       </section>
 
-      <section className="wrap section" aria-labelledby="titre-forfait">
+      <section className="wrap" aria-labelledby="titre-forfait" style={{ paddingBottom: 72 }}>
         <div className="forfait">
           <div>
             <h2 id="titre-forfait">{a.forfaitTitre}</h2>
