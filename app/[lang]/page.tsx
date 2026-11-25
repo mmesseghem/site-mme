@@ -126,10 +126,10 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
       <section className="wrap section" aria-labelledby="titre-trouver">
         <div className="trouver">
           <Image
-            src="/images/photos/facade.jpg"
+            src="/images/photos/entree-2026.jpg"
             alt={a.altFacade}
-            width={1600}
-            height={1065}
+            width={1400}
+            height={1501}
             sizes="(max-width: 960px) 100vw, 600px"
           />
           <div className="trouver-infos">

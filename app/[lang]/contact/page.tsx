@@ -65,10 +65,10 @@ export default async function Contact({ params }: PageProps<"/[lang]/contact">) 
         </dl>
         <div className="contact-visuel">
           <Image
-            src="/images/photos/facade.jpg"
+            src="/images/photos/facade-2026.jpg"
             alt={c.altFacade}
             width={1600}
-            height={1065}
+            height={1024}
             sizes="(max-width: 960px) 100vw, 540px"
           />
           <p>{c.carte}</p>
