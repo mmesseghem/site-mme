@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   return {
     title: { default: dict.meta.titre, template: `%s — ${dict.commun.nomComplet}` },
     description: dict.meta.description,
+    icons: { icon: "/images/icone.png", apple: "/images/icone-apple.png" },
     // Site en construction : il ne doit pas apparaître dans Google tant que l'ancien site est en ligne.
     // À retirer au moment de la mise en ligne officielle.
     robots: { index: false, follow: false },
