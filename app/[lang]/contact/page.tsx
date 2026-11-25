@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Contenu from "@/components/Contenu";
 import { getDictionnaire } from "@/content/dictionnaires";
+import { pagesContenu } from "@/content/pages";
 import { hasLocale, href } from "@/lib/i18n";
 import { contact } from "@/lib/site";
 
@@ -65,8 +67,10 @@ export default async function Contact({ params }: PageProps<"/[lang]/contact">) 
         <div className="contact-visuel">
           {/* À remplacer par la photo de la façade. */}
           <div className="photo-a-venir">{c.photoFacade}</div>
-          <p>{c.carte}</p>
         </div>
+      </div>
+      <div style={{ marginTop: 32 }}>
+        <Contenu blocs={pagesContenu.contact[lang].blocs} lang={lang} />
       </div>
     </section>
   );

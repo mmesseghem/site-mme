@@ -712,6 +712,161 @@ img {
   color: var(--gris);
 }
 
+/* ---------- Pages de contenu ---------- */
+.page-soustitre {
+  margin: 12px 0 0;
+  font-size: 20px;
+  color: var(--gris);
+}
+.contenu {
+  max-width: 46rem;
+}
+.contenu > p,
+.contenu li {
+  margin: 0 0 14px;
+}
+.contenu h2 {
+  margin: 40px 0 14px;
+  font-size: 28px;
+}
+.contenu ul {
+  margin: 0 0 14px;
+  padding-left: 22px;
+}
+.contenu .encadre {
+  margin: 24px 0;
+}
+.contenu .encadre strong {
+  display: block;
+  margin-bottom: 6px;
+}
+.contenu .encadre p {
+  margin: 0;
+}
+.contenu-photo {
+  width: 100%;
+  height: auto;
+  margin: 28px 0;
+  border-radius: 20px;
+}
+.contenu-lien a {
+  font-weight: 600;
+}
+.etapes {
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  counter-reset: etape;
+}
+.etapes li {
+  position: relative;
+  padding-left: 48px;
+  min-height: 34px;
+  counter-increment: etape;
+}
+.etapes li::before {
+  content: counter(etape);
+  position: absolute;
+  left: 0;
+  top: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bordeaux);
+  color: var(--blanc);
+  font-family: var(--titres);
+  font-weight: 600;
+}
+/* Frise chronologique (historique) */
+.frise {
+  margin: 0;
+  padding: 0 0 0 24px;
+  list-style: none;
+  border-left: 2px solid var(--bordure);
+}
+.frise li {
+  position: relative;
+  margin: 0 0 28px;
+}
+.frise li::before {
+  content: "";
+  position: absolute;
+  left: -32px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--vert);
+  border: 3px solid var(--fond);
+}
+.frise-date {
+  font-family: var(--titres);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--bordeaux);
+}
+.frise p {
+  margin: 4px 0 0;
+}
+/* Questions fréquentes (dépliables) */
+.questions {
+  margin: 0 0 16px;
+  border-top: 1px solid var(--bordure);
+}
+.questions details {
+  border-bottom: 1px solid var(--bordure);
+}
+.questions summary {
+  padding: 18px 36px 18px 0;
+  position: relative;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.questions summary::-webkit-details-marker {
+  display: none;
+}
+.questions summary::after {
+  content: "+";
+  position: absolute;
+  right: 6px;
+  top: 14px;
+  font-size: 24px;
+  color: var(--bordeaux);
+}
+.questions details[open] summary::after {
+  content: "−";
+}
+.questions details p {
+  margin: 0 0 14px;
+  color: var(--encre);
+}
+/* Informations reprises de l'ancien site, à confirmer par l'équipe */
+.a-verifier {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border: 1px dashed #b26b00;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #8a5300;
+  background: #fff4e0;
+  vertical-align: 1px;
+}
+/* Information manquante, à fournir par l'équipe */
+.a-completer {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px dashed var(--gris);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--gris);
+  background: #fffbe6;
+}
+
 /* ---------- Pied de page ---------- */
 .pied {
   background: var(--encre);

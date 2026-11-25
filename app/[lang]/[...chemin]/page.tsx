@@ -1,9 +1,11 @@
-// Pages provisoires : chaque lien du menu mène à une vraie page,
-// en attendant que son contenu soit repris de l'ancien site.
+// Pages intérieures : le contenu vient de content/pages/ s'il existe ;
+// sinon, une page provisoire « en préparation » s'affiche, pour qu'aucun lien du menu ne soit cassé.
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Contenu from "@/components/Contenu";
 import { getDictionnaire, type Dictionnaire } from "@/content/dictionnaires";
+import { pagesContenu } from "@/content/pages";
 import { hasLocale, href, locales, type Locale } from "@/lib/i18n";
 import {
   actions,
@@ -54,6 +56,7 @@ export default async function PageProvisoire({ params }: PageProps<"/[lang]/[...
   const page = lire(lang, chemin);
   if (!page) notFound();
   const { dict, infos } = page;
+  const contenu = pagesContenu[chemin.join("/")]?.[page.lang];
 
   return (
     <>
@@ -69,8 +72,14 @@ export default async function PageProvisoire({ params }: PageProps<"/[lang]/[...
             </ol>
           </nav>
           <h1 className="titre-page">{infos.titre}</h1>
+          {contenu?.soustitre && <p className="page-soustitre">{contenu.soustitre}</p>}
         </div>
       </section>
+      {contenu ? (
+        <section className="wrap section">
+          <Contenu blocs={contenu.blocs} lang={page.lang} />
+        </section>
+      ) : (
       <section className="wrap section">
         <div className="encadre">
           <p>{dict.provisoire.texte}</p>
@@ -80,6 +89,7 @@ export default async function PageProvisoire({ params }: PageProps<"/[lang]/[...
           <Link href={href(page.lang)}>{dict.provisoire.retour}</Link>
         </div>
       </section>
+      )}
     </>
   );
 }
