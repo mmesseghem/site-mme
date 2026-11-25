@@ -1,0 +1,31 @@
+# Vérifications automatiques : à chaque proposition de modification (pull request),
+# GitHub vérifie que le code est propre (lint), que le site se construit (build)
+# et qu'aucun composant n'a de faille de sécurité connue grave (audit).
+name: Vérifications
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Construction du site
+        run: npm run build
+      - name: Audit de sécurité des composants
+        run: npm audit --omit=dev --audit-level=high
