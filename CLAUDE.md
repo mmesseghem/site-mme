@@ -64,8 +64,10 @@ Prépare la modification, puis arrête-toi et demande son accord avant de la fus
 - le formulaire de médicaments ou tout formulaire qui recueille des données de santé ;
 - la connexion à l'espace d'administration, les droits d'accès, les comptes ;
 - la base de données Supabase et la conservation des données ;
-- les variables secrètes, les réglages Vercel ou GitHub, les workflows automatiques ;
+- les variables secrètes, les réglages Vercel ou GitHub, les workflows automatiques (sauf les vérifications automatiques, voir ci-dessous) ;
 - les domaines, DNS et adresses e-mail.
+
+Exception, accord permanent de Michaël : les **vérifications automatiques** (fichiers de `.github/workflows/` qui contrôlent le code : lint, construction, audit de sécurité, tests) peuvent être ajoutées ou ajustées sans lui demander, à condition qu'elles ne fassent que vérifier : droits en lecture seule, aucun secret utilisé, aucune publication ni déploiement. Ne jamais supprimer ou affaiblir une vérification existante sans son accord.
 
 Tout le reste (textes, pages, sections, images, mise en page) peut être fusionné une fois la liste de contrôle passée et les vérifications automatiques au vert.
 
