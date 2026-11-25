@@ -12,7 +12,7 @@ import "../globals.css";
 import EnTete from "@/components/EnTete";
 import PiedDePage from "@/components/PiedDePage";
 import { getDictionnaire } from "@/content/dictionnaires";
-import { hasLocale, locales } from "@/lib/i18n";
+import { deuxPoints, hasLocale, locales } from "@/lib/i18n";
 import { alerte } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -37,6 +37,9 @@ export default async function LayoutLangue({ children, params }: LayoutProps<"/[
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = getDictionnaire(lang);
+  // Bandeau d'alerte : le vrai message s'il y en a un. Sur les liens de test de Vercel seulement,
+  // un message d'exemple est affiché pour montrer le bandeau à l'équipe (jamais sur le site public).
+  const messageAlerte = alerte?.[lang] ?? (process.env.VERCEL_ENV === "preview" ? dict.commun.alerteExemple : null);
 
   return (
     <html lang={lang}>
@@ -44,10 +47,14 @@ export default async function LayoutLangue({ children, params }: LayoutProps<"/[
         <a href="#contenu" className="lien-evitement">
           {dict.commun.allerAuContenu}
         </a>
-        {alerte && (
+        {messageAlerte && (
           <div className="alerte" role="status">
             <div className="wrap">
-              <strong>{dict.commun.alerte} :</strong> {alerte[lang]}
+              <strong>
+                {dict.commun.alerte}
+                {deuxPoints(lang)}
+              </strong>
+              {messageAlerte}
             </div>
           </div>
         )}

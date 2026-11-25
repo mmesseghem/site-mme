@@ -400,13 +400,6 @@ img {
   font-size: 15px;
   color: var(--gris);
 }
-/* Sur la photo de la façade, la carte se place à droite pour ne pas cacher l'enseigne. */
-@media (min-width: 961px) {
-  .hero-visuel .carte-horaires {
-    left: auto;
-    right: -12px;
-  }
-}
 .carte-horaires .statut-detail {
   font-size: 16px;
   font-weight: 600;
@@ -415,11 +408,75 @@ img {
 .carte-horaires .statut-detail.bientot {
   color: var(--bordeaux);
 }
-/* Sur la photo de la façade, la carte se place à droite pour ne pas cacher l'enseigne. */
-@media (min-width: 961px) {
-  .hero-visuel .carte-horaires {
-    left: auto;
-    right: -12px;
+/* Version B : la carte de statut se place à côté des boutons, sans recouvrir la photo. */
+.hero-actions {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+.hero-actions .boutons {
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-actions .bouton {
+  padding: 14px 22px;
+  text-align: center;
+  white-space: nowrap;
+}
+.hero-actions .carte-horaires {
+  position: static;
+  min-width: 0;
+  box-shadow: none;
+  border: 1.5px solid var(--bordure);
+}
+.hero-actions .carte-horaires.ferme {
+  border-color: var(--bordeaux);
+}
+/* Bloc unique d'infos pratiques, avec icônes */
+.infos-bloc {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  border: 1px solid var(--bordure);
+  border-radius: 20px;
+  background: var(--blanc);
+}
+.infos-bloc > div {
+  display: flex;
+  gap: 16px;
+  padding: 24px 26px;
+}
+.infos-bloc > div + div {
+  border-left: 1px solid var(--bordure);
+}
+.infos-bloc dt {
+  font-weight: 600;
+}
+.infos-bloc dd {
+  margin: 2px 0 0;
+  font-size: 15px;
+  color: var(--gris);
+}
+.infos-icone {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--fond-rose);
+  color: var(--bordeaux);
+}
+@media (max-width: 960px) {
+  .hero-actions,
+  .infos-bloc {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .infos-bloc > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--bordure);
   }
 }
 /* Fermé : point bordeaux et numéros de garde et d'urgence mis en avant */

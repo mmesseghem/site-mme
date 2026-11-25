@@ -1,10 +1,10 @@
-// Page d'accueil — version B : en-tête et cartes d'accès rapide de la version A,
-// puis les sections proposées par le groupe de travail : infos pratiques, urgences,
-// nos soins, soins au forfait, activités et La Récré. « Notre philosophie » en version courte.
+// Page d'accueil — version B : menu de la version A ; haut de page avec les boutons empilés
+// et le statut d'ouverture à côté ; bloc d'infos pratiques ; urgences ; « Je souhaite… » ;
+// nos soins ; soins au forfait ; activités et La Récré ; « Notre philosophie » en version courte.
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import IconeSoin from "@/components/Icones";
+import IconeSoin, { IconeInfo } from "@/components/Icones";
 import MaisonAnimee from "@/components/MaisonAnimee";
 import StatutOuverture from "@/components/StatutOuverture";
 import { getDictionnaire } from "@/content/dictionnaires";
@@ -25,7 +25,11 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
   const dict = getDictionnaire(lang);
   const a = dict.accueil;
 
-  const liensAcces = [contact.telephoneLien, href(lang, "/pratique/demande-medicaments"), href(lang, "/pratique/inscription")];
+  const liensSouhaits = [
+    href(lang, "/pratique/demande-medicaments"),
+    href(lang, "/pratique/faq"),
+    href(lang, "/pratique/inscription"),
+  ];
 
   return (
     <>
@@ -35,13 +39,16 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
             <span className="surtitre">{a.surtitre}</span>
             <h1>{a.titre}</h1>
             <p>{a.texte}</p>
-            <div className="boutons">
-              <a href={contact.telephoneLien} className="bouton bouton-plein">
-                {a.boutonAppeler}
-              </a>
-              <Link href={href(lang, "/pratique/demande-medicaments")} className="bouton bouton-contour">
-                {a.boutonMedic}
-              </Link>
+            <div className="hero-actions">
+              <div className="boutons">
+                <a href={contact.telephoneLien} className="bouton bouton-plein">
+                  {a.boutonAppeler}
+                </a>
+                <Link href={href(lang, "/pratique/demande-medicaments")} className="bouton bouton-contour">
+                  {a.boutonMedic}
+                </Link>
+              </div>
+              <StatutOuverture t={a.statut} lang={lang} />
             </div>
           </div>
           <div className="hero-visuel">
@@ -53,59 +60,51 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
               sizes="(max-width: 960px) 100vw, 560px"
               priority
             />
-            <StatutOuverture t={a.statut} lang={lang} />
           </div>
         </div>
       </section>
 
-      <div className="wrap">
-        <ul className="acces">
-          {a.acces.map((carte, i) => {
-            const lien = liensAcces[i];
-            const contenu = (
-              <>
-                <span className="acces-numero">{String(i + 1).padStart(2, "0")}</span>
-                <span className="acces-titre">{carte.titre}</span>
-                <span className="acces-texte">{carte.texte}</span>
-              </>
-            );
-            return (
-              <li key={carte.titre} className={i === 1 ? "acces-mis-en-avant" : undefined}>
-                {lien.startsWith("tel:") ? <a href={lien}>{contenu}</a> : <Link href={lien}>{contenu}</Link>}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-
-      <section className="wrap infos-pratiques" aria-label={dict.pied.colPratique}>
-        <div>
-          <h2>{a.libAdresse}</h2>
-          <p>
-            {contact.rue}, {contact.ville}
-          </p>
-          <p>
-            <Link href={href(lang, "/contact")}>{a.lienAcces}</Link>
-          </p>
-          <p className="a-completer">{a.aCompleterAcces}</p>
-        </div>
-        <div>
-          <h2>{a.libContact}</h2>
-          <p>
-            <a href={contact.telephoneLien}>{contact.telephone}</a>
-          </p>
-          <p>
-            <a href={`mailto:${contact.email}`}>{contact.email}</a>
-          </p>
-        </div>
-        <div>
-          <h2>{a.libHoraires}</h2>
-          <p>{a.horaires}</p>
-          <p className="a-completer">{a.aCompleterConsultations}</p>
-        </div>
+      <section className="wrap" aria-label={a.infosTitre} style={{ paddingTop: 48 }}>
+        <dl className="infos-bloc">
+          <div>
+            <span className="infos-icone">
+              <IconeInfo type="adresse" />
+            </span>
+            <div>
+              <dt>
+                {contact.rue}, {contact.ville}
+              </dt>
+              <dd>
+                <Link href={href(lang, "/contact")}>{a.lienAcces}</Link>
+              </dd>
+            </div>
+          </div>
+          <div>
+            <span className="infos-icone">
+              <IconeInfo type="contact" />
+            </span>
+            <div>
+              <dt>
+                <a href={contact.telephoneLien}>{contact.telephone}</a>
+              </dt>
+              <dd>
+                <a href={`mailto:${contact.email}`}>{contact.email}</a>
+              </dd>
+            </div>
+          </div>
+          <div>
+            <span className="infos-icone">
+              <IconeInfo type="horaires" />
+            </span>
+            <div>
+              <dt>{a.horaires}</dt>
+              <dd>{a.fermeWeekend}</dd>
+            </div>
+          </div>
+        </dl>
       </section>
 
-      <section className="wrap" aria-labelledby="titre-urgence">
+      <section className="wrap" aria-labelledby="titre-urgence" style={{ paddingTop: 24 }}>
         <div className="urgence">
           <div>
             <h2 id="titre-urgence">{a.urgenceTitre}</h2>
@@ -125,6 +124,23 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
             </a>
           </p>
         </div>
+      </section>
+
+      <section className="wrap section" aria-labelledby="titre-souhaite" style={{ paddingBottom: 0 }}>
+        <h2 id="titre-souhaite" className="titre-section">
+          {a.souhaitTitre}
+        </h2>
+        <ul className="acces" style={{ paddingTop: 0 }}>
+          {a.souhaits.map((carte, i) => (
+            <li key={carte.titre} className={i === 0 ? "acces-mis-en-avant" : undefined}>
+              <Link href={liensSouhaits[i]}>
+                <span className="acces-numero">{String(i + 1).padStart(2, "0")}</span>
+                <span className="acces-titre">{carte.titre}</span>
+                <span className="acces-texte">{carte.texte}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="wrap section" aria-labelledby="titre-soins">
