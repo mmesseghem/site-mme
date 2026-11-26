@@ -24,9 +24,9 @@ export const ouverture = { jours: [1, 2, 3, 4, 5], debut: 8, fin: 19 } as const;
 // (content/dictionnaires.ts, accueil.souhaits). La page S'inscrire change toute seule.
 export const inscriptionsOuvertes = false;
 
-// Médecins proposés dans le formulaire de demande de médicaments (liste de l'ancien site, novembre 2026).
-// À vérifier par l'équipe : l'équipe médicale a pu changer.
-export const medecins = ["Dr Dupont", "Dr Noki", "Dr Legros", "Dr Gruwé", "Dr Werts", "Dr Kabore", "Dr Daudre-Vignier"];
+// Médecins proposés dans le formulaire de demande de médicaments.
+// Liste vide = le champ « Médecin » est masqué. L'ancienne liste n'est plus à jour : Michaël fournira la nouvelle.
+export const medecins: string[] = [];
 
 // Bandeau d'alerte en haut de toutes les pages (fermeture exceptionnelle, congés…).
 // Mettre null pour le masquer. Plus tard, Séverine pourra le gérer depuis l'espace d'administration.

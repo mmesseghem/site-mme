@@ -94,17 +94,19 @@ export default function FormulaireMedicaments({ t }: { t: TextesFormulaire }) {
           <input type="email" name="email" autoComplete="email" maxLength={120} defaultValue={valeurs.email} {...aria("email")} />
           {msg("email")}
         </label>
-        <label className="form-champ">
-          <span>{t.medecin}</span>
-          <select name="medecin" defaultValue={valeurs.medecin ?? ""}>
-            <option value="">{t.sansPreference}</option>
-            {medecins.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
-          </select>
-        </label>
+        {medecins.length > 0 && (
+          <label className="form-champ">
+            <span>{t.medecin}</span>
+            <select name="medecin" defaultValue={valeurs.medecin ?? ""}>
+              <option value="">{t.sansPreference}</option>
+              {medecins.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
       </div>
 
       <label className="form-champ">
