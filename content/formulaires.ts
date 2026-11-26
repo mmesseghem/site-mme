@@ -1,5 +1,5 @@
 // Textes du formulaire de demande de médicaments, dans les trois langues.
-// La mention RGPD est une PROPOSITION : à valider par l'équipe (et Michaël) avant la mise en ligne.
+// Mention RGPD validée par Michaël le 26/11/2026 ; version avec copie de secours de 30 jours (branche espace-admin).
 import type { Locale } from "@/lib/i18n";
 
 const fr = {
@@ -17,7 +17,7 @@ const fr = {
     "J'accepte que ces informations soient envoyées à l'équipe médicale de la maison médicale pour traiter ma demande.",
   rgpdTitre: "Vos données",
   rgpd:
-    "Les informations de ce formulaire sont envoyées par e-mail à l'équipe de la Maison Médicale Esseghem ASBL, uniquement pour préparer votre prescription. Elles ne sont pas enregistrées sur le site. Pour toute question sur vos données, ou pour exercer vos droits (accès, rectification, effacement), écrivez à info@mmesseghem.be.",
+    "Les informations de ce formulaire sont envoyées par e-mail à l'équipe de la Maison Médicale Esseghem ASBL, uniquement pour préparer votre prescription. Une copie de secours est conservée de façon sécurisée pendant 30 jours (pour retrouver une demande si un e-mail se perd), puis effacée automatiquement ; seul l'administrateur du site peut la consulter. Pour toute question sur vos données, ou pour exercer vos droits (accès, rectification, effacement), écrivez à info@mmesseghem.be.",
   obligatoire: "obligatoire",
   envoyer: "Envoyer ma demande",
   envoi: "Envoi en cours…",
@@ -57,7 +57,7 @@ const nl: TextesFormulaire = {
     "Ik ga ermee akkoord dat deze gegevens naar het medisch team van het wijkgezondheidscentrum worden gestuurd om mijn aanvraag te behandelen.",
   rgpdTitre: "Uw gegevens",
   rgpd:
-    "De gegevens van dit formulier worden per e-mail naar het team van Maison Médicale Esseghem vzw gestuurd, uitsluitend om uw voorschrift klaar te maken. Ze worden niet op de website bewaard. Voor vragen over uw gegevens, of om uw rechten uit te oefenen (inzage, verbetering, wissing), schrijft u naar info@mmesseghem.be.",
+    "De gegevens van dit formulier worden per e-mail naar het team van Maison Médicale Esseghem vzw gestuurd, uitsluitend om uw voorschrift klaar te maken. Een reservekopie wordt 30 dagen beveiligd bewaard (om een aanvraag terug te vinden als een e-mail verloren gaat) en daarna automatisch gewist; alleen de beheerder van de website kan ze inkijken. Voor vragen over uw gegevens, of om uw rechten uit te oefenen (inzage, verbetering, wissing), schrijft u naar info@mmesseghem.be.",
   obligatoire: "verplicht",
   envoyer: "Mijn aanvraag versturen",
   envoi: "Bezig met versturen…",
@@ -94,7 +94,7 @@ const en: TextesFormulaire = {
   consentement: "I agree that this information will be sent to the health centre's medical team to process my request.",
   rgpdTitre: "Your data",
   rgpd:
-    "The information in this form is sent by email to the team of Maison Médicale Esseghem ASBL, only to prepare your prescription. It is not stored on the website. For any question about your data, or to exercise your rights (access, correction, deletion), write to info@mmesseghem.be.",
+    "The information in this form is sent by email to the team of Maison Médicale Esseghem ASBL, only to prepare your prescription. A backup copy is kept securely for 30 days (to recover a request if an email gets lost), then deleted automatically; only the site administrator can view it. For any question about your data, or to exercise your rights (access, correction, deletion), write to info@mmesseghem.be.",
   obligatoire: "required",
   envoyer: "Send my request",
   envoi: "Sending…",

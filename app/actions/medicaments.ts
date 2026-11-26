@@ -4,6 +4,7 @@
 // puis elle est oubliée. Les réglages (clés Mailjet, adresses) viennent des variables d'environnement de Vercel.
 import { headers } from "next/headers";
 import { medecins } from "@/lib/site";
+import { clientService, serviceConfigure } from "@/lib/supabase/service";
 
 export type ChampMedic = "nom" | "prenom" | "naissance" | "telephone" | "email" | "medecin" | "medicaments" | "consentement";
 export type CodeErreur = "requis" | "email" | "telephone" | "naissance" | "long" | "consentement";
@@ -115,6 +116,21 @@ export async function envoyerDemandeMedicaments(_precedent: EtatMedic, form: For
   };
   if (valeurs.email) message.ReplyTo = { Email: valeurs.email, Name: `${valeurs.prenom} ${valeurs.nom}` };
 
+  // Copie de secours (espace d'administration) : gardée 30 jours, visible par l'administrateur seul.
+  // Si la base n'est pas branchée, la demande part seulement par e-mail, comme avant.
+  let idCopie: string | null = null;
+  if (serviceConfigure()) {
+    const { data } = await clientService()
+      .from("demandes_medicaments")
+      .insert({
+        nom: valeurs.nom, prenom: valeurs.prenom, naissance: valeurs.naissance, telephone: valeurs.telephone,
+        email: valeurs.email || null, medecin: valeurs.medecin || null, medicaments: valeurs.medicaments,
+      })
+      .select("id")
+      .maybeSingle<{ id: string }>();
+    idCopie = data?.id ?? null;
+  }
+
   try {
     const reponse = await fetch("https://api.mailjet.com/v3.1/send", {
       method: "POST",
@@ -134,5 +150,6 @@ export async function envoyerDemandeMedicaments(_precedent: EtatMedic, form: For
     console.error("Mailjet : service injoignable");
     return { statut: "erreur" };
   }
+  if (idCopie) await clientService().from("demandes_medicaments").update({ email_envoye: true }).eq("id", idCopie);
   return { statut: "envoye" };
 }
