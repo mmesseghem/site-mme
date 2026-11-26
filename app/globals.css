@@ -1473,3 +1473,16 @@ img {
 .formulaire button[type="submit"] {
   display: block;
 }
+
+/* ---------- Newsletter (numéro affiché sur le site et aperçu de l'éditeur) ---------- */
+.numero { max-width: 44rem; padding: 28px; background: var(--blanc); border-radius: 20px; display: flex; flex-direction: column; gap: 14px; }
+.numero-surtitre { margin: 0; font-size: 12px; letter-spacing: .18em; font-weight: 600; color: var(--vert-texte); }
+.numero-titre { margin: 0; font-family: var(--titres); font-size: 30px; color: var(--bordeaux); }
+.numero-intertitre { margin: 8px 0 0; font-family: var(--titres); font-size: 21px; }
+.numero-texte { margin: 0; white-space: pre-line; line-height: 1.6; }
+.numero-encadre { padding: 16px 18px; border-radius: 14px; background: var(--bordeaux); color: var(--blanc); }
+.numero-encadre span { font-size: 12px; letter-spacing: .14em; font-weight: 600; }
+.numero-encadre p { margin: 6px 0 0; white-space: pre-line; }
+.archive-numeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 24px; }
+.archive-numero { padding: 18px; border-radius: 16px; background: var(--fond-rose); color: var(--encre); text-decoration: none; display: flex; flex-direction: column; gap: 6px; }
+.archive-numero strong { font-family: var(--titres); font-size: 19px; color: var(--bordeaux); }

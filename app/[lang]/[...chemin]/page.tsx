@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Contenu from "@/components/Contenu";
 import FormulaireMedicaments from "@/components/FormulaireMedicaments";
+import ArchiveNewsletter from "@/components/ArchiveNewsletter";
 import { getTextesFormulaire } from "@/content/formulaires";
 import { getDictionnaire, type Dictionnaire } from "@/content/dictionnaires";
 import { pagesContenu } from "@/content/pages";
@@ -83,6 +84,7 @@ export default async function PageProvisoire({ params }: PageProps<"/[lang]/[...
           {chemin.join("/") === "pratique/demande-medicaments" && (
             <FormulaireMedicaments t={getTextesFormulaire(page.lang)} />
           )}
+          {chemin.join("/") === "pratique/newsletter" && <ArchiveNewsletter lang={page.lang} />}
         </section>
       ) : (
       <section className="wrap section">
