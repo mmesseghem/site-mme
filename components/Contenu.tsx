@@ -95,10 +95,17 @@ export default function Contenu({ blocs, lang }: { blocs: Bloc[]; lang: Locale }
                 {b.items.map((d) => (
                   <li key={d.date + d.texte.slice(0, 20)}>
                     <span className="frise-date">{d.date}</span>
+                    {d.titre && <h3 className="frise-titre">{d.titre}</h3>}
                     <p>{d.texte}</p>
                   </li>
                 ))}
               </ol>
+            );
+          case "citation":
+            return (
+              <p key={i} className="contenu-citation">
+                {b.texte}
+              </p>
             );
           case "questions":
             return (

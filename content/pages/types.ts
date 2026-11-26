@@ -13,7 +13,8 @@ export type Bloc =
   | { t: "aCompleter"; texte: string }
   | { t: "lien"; texte: string; href: string }
   | { t: "photo"; src: string; alt: string; largeur: number; hauteur: number }
-  | { t: "dates"; items: { date: string; texte: string }[] }
+  | { t: "dates"; items: { date: string; titre?: string; texte: string }[] }
+  | { t: "citation"; texte: string }
   | { t: "questions"; items: { q: string; r: string[] }[] };
 
 export type Page = { soustitre?: string; blocs: Bloc[] };

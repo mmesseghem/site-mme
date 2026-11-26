@@ -58,7 +58,7 @@ const fr = {
   } satisfies Record<ActionSlug, string>,
   maison: {
     philosophie: "Notre philosophie",
-    historique: "Historique",
+    historique: "Notre histoire",
     "offres-emploi": "Offres d'emploi",
     confidentialite: "Politique de confidentialité",
   } satisfies Record<MaisonSlug, string>,
@@ -201,7 +201,7 @@ const nl: Dictionnaire = {
   },
   maison: {
     philosophie: "Onze visie",
-    historique: "Geschiedenis",
+    historique: "Onze geschiedenis",
     "offres-emploi": "Vacatures",
     confidentialite: "Privacybeleid",
   },
@@ -342,7 +342,7 @@ const en: Dictionnaire = {
   },
   maison: {
     philosophie: "Our philosophy",
-    historique: "History",
+    historique: "Our history",
     "offres-emploi": "Job vacancies",
     confidentialite: "Privacy policy",
   },
