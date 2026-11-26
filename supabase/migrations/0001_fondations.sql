@@ -7,7 +7,8 @@
 --   3. Toute lecture ou modification exige la double vérification (lien e-mail + code sur le téléphone).
 --      Sans le code, la base ne renvoie rien, même avec une session ouverte.
 --   4. Les actions importantes sont notées dans un journal que personne ne peut modifier.
---   5. Les demandes de médicaments s'effacent toutes seules après 30 jours.
+--   5. Les demandes de médicaments sont une COPIE DE SECOURS (l'accueil les traite par e-mail) :
+--      visibles par l'administrateur seul, jamais modifiables, effacées toutes seules après 30 jours.
 --
 -- Ce fichier ne contient aucun secret. Il s'exécute une fois dans Supabase (SQL Editor), avec l'accord de Michaël.
 
@@ -15,8 +16,8 @@
 create type public.role_admin as enum ('administrateur', 'contenu', 'accueil', 'lecture');
 -- administrateur : tout, et la gestion des comptes (Michaël)
 -- contenu        : newsletter, planning, inscriptions (Séverine)
--- accueil        : demandes de médicaments (consulter, marquer « traitée »)
--- lecture        : tout voir, rien modifier, sauf les demandes de médicaments
+-- accueil        : réservé pour plus tard (aucun accès aux demandes de médicaments pour l'instant)
+-- lecture        : tout voir, rien modifier (jamais les demandes de médicaments)
 
 create table public.profils (
   id uuid primary key references auth.users (id) on delete cascade,
@@ -89,7 +90,9 @@ create trigger journal_profils
   after insert or update or delete on public.profils
   for each row execute function public.noter_action();
 
--- ---------- Demandes de médicaments (gardées 30 jours) ----------
+-- ---------- Demandes de médicaments : copie de secours (gardée 30 jours) ----------
+-- L'accueil reçoit et traite les demandes par e-mail, comme avant. Cette copie sert seulement si un e-mail
+-- se perd : l'administrateur peut alors retrouver la demande. Pas de suivi « traitée » ici.
 create table public.demandes_medicaments (
   id uuid primary key default gen_random_uuid(),
   recue_le timestamptz not null default now(),
@@ -100,22 +103,29 @@ create table public.demandes_medicaments (
   email text,
   medecin text,
   medicaments text not null,
-  email_envoye boolean not null default false,
-  traitee_le timestamptz,
-  traitee_par uuid references auth.users (id) on delete set null
+  email_envoye boolean not null default false
 );
 alter table public.demandes_medicaments enable row level security;
 -- Le site enregistre les demandes avec sa clé serveur (qui contourne ces règles) ; personne d'autre ne peut en créer.
-create policy "demandes : l'accueil et l'administrateur lisent" on public.demandes_medicaments
-  for select to authenticated using (public.mon_role() in ('administrateur', 'accueil'));
-create policy "demandes : l'accueil et l'administrateur marquent traitée" on public.demandes_medicaments
-  for update to authenticated
-  using (public.mon_role() in ('administrateur', 'accueil'))
-  with check (public.mon_role() in ('administrateur', 'accueil'));
+-- Aucune règle de modification ni de suppression : seul l'effacement automatique (ci-dessous) retire une demande.
+create policy "demandes : seul l'administrateur lit" on public.demandes_medicaments
+  for select to authenticated using (public.mon_role() = 'administrateur');
 
-create trigger journal_demandes
-  after update or delete on public.demandes_medicaments
-  for each row execute function public.noter_action();
+-- Chaque consultation est notée dans le journal (appelée par la page de l'espace d'administration).
+create or replace function public.noter_consultation_demandes()
+returns void
+language sql
+security definer
+set search_path = ''
+as $$
+  insert into public.journal (qui, action) select auth.uid(), 'demandes_medicaments : consultation'
+  where public.mon_role() = 'administrateur'
+$$;
+revoke all on function public.noter_consultation_demandes() from public, anon;
+grant execute on function public.noter_consultation_demandes() to authenticated;
+
+-- Plus tard : les demandes d'inscription des patients (quand elles rouvriront) suivront le même principe
+-- (e-mail à l'équipe + copie de secours visible par l'administrateur), durée de conservation à décider.
 
 -- Effacement automatique après 30 jours, chaque nuit à 3 h (extension pg_cron, à activer dans Supabase).
 create extension if not exists pg_cron;
