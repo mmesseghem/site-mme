@@ -8,27 +8,21 @@ export const pagesDivers: Record<string, PageTraduite> = {
       soustitre: "Pour vos traitements chroniques connus",
       blocs: [
         { t: "p", texte: "Vous pouvez demander le renouvellement de vos médicaments pour un traitement chronique déjà connu de votre médecin." },
-        { t: "etapes", items: ["Faites votre demande à l'accueil, sur place ou par téléphone au 02 424 25 40.", "Précisez le nom du médicament, le dosage, la forme et le type de boîte.", "72 heures plus tard, votre prescription est disponible sur votre carte d'identité : rendez-vous simplement à votre pharmacie."] },
-        { t: "aCompleter", texte: "Formulaire de demande en ligne : en préparation (à valider par Michaël, avec la mention RGPD et les destinataires)." },
-        { t: "lien", texte: "Appeler l'accueil", href: "tel:+3224242540" },
+        { t: "etapes", items: ["Remplissez le formulaire ci-dessous, ou faites votre demande à l'accueil, sur place ou par téléphone au 02 424 25 40.", "Précisez le nom du médicament, le dosage, la forme et le type de boîte.", "72 heures plus tard, votre prescription est disponible sur votre carte d'identité : rendez-vous simplement à votre pharmacie."] },
       ],
     },
     nl: {
       soustitre: "Voor uw gekende chronische behandelingen",
       blocs: [
         { t: "p", texte: "U kunt de hernieuwing aanvragen van geneesmiddelen voor een chronische behandeling die uw arts al kent." },
-        { t: "etapes", items: ["Vraag het aan bij het onthaal, ter plaatse of telefonisch op 02 424 25 40.", "Vermeld de naam van het geneesmiddel, de dosis, de vorm en het type verpakking.", "72 uur later staat uw voorschrift op uw identiteitskaart: ga gewoon naar uw apotheek."] },
-        { t: "aCompleter", texte: "Online aanvraagformulier: in voorbereiding." },
-        { t: "lien", texte: "Het onthaal bellen", href: "tel:+3224242540" },
+        { t: "etapes", items: ["Vul het formulier hieronder in, of vraag het aan bij het onthaal, ter plaatse of telefonisch op 02 424 25 40.", "Vermeld de naam van het geneesmiddel, de dosis, de vorm en het type verpakking.", "72 uur later staat uw voorschrift op uw identiteitskaart: ga gewoon naar uw apotheek."] },
       ],
     },
     en: {
       soustitre: "For your known ongoing treatments",
       blocs: [
         { t: "p", texte: "You can ask to renew medication for an ongoing treatment that your doctor already knows about." },
-        { t: "etapes", items: ["Ask at reception, in person or by phone on 02 424 25 40.", "Give the name of the medicine, the dose, the form and the type of box.", "72 hours later, your prescription is available on your identity card: simply go to your pharmacy."] },
-        { t: "aCompleter", texte: "Online request form: in preparation." },
-        { t: "lien", texte: "Call reception", href: "tel:+3224242540" },
+        { t: "etapes", items: ["Fill in the form below, or ask at reception, in person or by phone on 02 424 25 40.", "Give the name of the medicine, the dose, the form and the type of box.", "72 hours later, your prescription is available on your identity card: simply go to your pharmacy."] },
       ],
     },
   },
