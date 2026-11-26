@@ -1,6 +1,7 @@
 // Pages « En pratique » : s'inscrire et questions fréquentes.
 // Contenu repris de l'ancien site, nettoyé et mis en cohérence (garde : 1733).
 // Les informations contradictoires entre pages de l'ancien site sont marquées « à vérifier ».
+import { inscriptionsOuvertes } from "@/lib/site";
 import type { PageTraduite } from "./types";
 
 const CARTE_OSM = "https://www.openstreetmap.org/search?query=Rue%20Esseghem%2024%2C%201090%20Jette";
@@ -34,10 +35,15 @@ export const pagesPratique: Record<string, PageTraduite> = {
     },
   },
 
+  // Page S'inscrire : le message d'état dépend du réglage inscriptionsOuvertes (lib/site.ts).
   "pratique/inscription": {
     fr: {
-      soustitre: "Ce que cela signifie et comment faire",
+      soustitre: inscriptionsOuvertes ? "Ce que cela signifie et comment faire" : "Inscriptions fermées pour le moment",
       blocs: [
+        inscriptionsOuvertes
+          ? { t: "encadre", titre: "Les inscriptions sont ouvertes", texte: "L'inscription se fait sur rendez-vous : contactez l'accueil au 02 424 25 40. Elle prend cours le premier jour du mois qui suit la signature du contrat." }
+          : { t: "encadre", titre: "Nous n'inscrivons pas de nouveaux patients pour le moment", texte: "La maison médicale n'accepte plus de nouvelles inscriptions et n'a plus de liste d'attente pour l'instant. Si la situation change, nous l'annoncerons ici." },
+        { t: "h2", texte: "Ce que signifie l'inscription au forfait" },
         { t: "p", texte: "Être inscrit à une maison médicale au forfait signifie que vous ne payez plus vos consultations de médecine générale, de kinésithérapie générale et vos soins infirmiers. Votre mutuelle verse chaque mois une somme forfaitaire à la maison médicale pour couvrir votre prise en charge. En contrepartie, vous venez à la maison médicale pour ces soins." },
         { t: "p", texte: "Un contrat individuel est signé entre vous, votre mutuelle et la maison médicale." },
         { t: "h2", texte: "Les conditions" },
@@ -50,16 +56,16 @@ export const pagesPratique: Record<string, PageTraduite> = {
           ],
         },
         { t: "aCompleter", texte: "Zone d'inscription : carte ou liste des rues à ajouter." },
-        { t: "h2", texte: "Comment s'inscrire ?" },
-        { t: "p", texte: "L'inscription se fait sur rendez-vous et prend cours le premier jour du mois qui suit la signature du contrat. Il existe une liste d'attente : contactez l'accueil au 02 424 25 40 pour y être inscrit.", verifier: true },
-        { t: "aCompleter", texte: "État des inscriptions à confirmer : ouvertes, sur liste d'attente ou fermées (l'ancien site disait les deux)." },
-        { t: "lien", texte: "Appeler l'accueil", href: "tel:+3224242540" },
         { t: "lien", texte: "Pourquoi le forfait ? Notre philosophie", href: "/philosophie" },
       ],
     },
     nl: {
-      soustitre: "Wat het betekent en hoe het werkt",
+      soustitre: inscriptionsOuvertes ? "Wat het betekent en hoe het werkt" : "Inschrijvingen momenteel gesloten",
       blocs: [
+        inscriptionsOuvertes
+          ? { t: "encadre", titre: "De inschrijvingen zijn open", texte: "De inschrijving gebeurt op afspraak: neem contact op met het onthaal op 02 424 25 40. Ze gaat in op de eerste dag van de maand na de ondertekening van het contract." }
+          : { t: "encadre", titre: "We schrijven momenteel geen nieuwe patiënten in", texte: "Het wijkgezondheidscentrum aanvaardt momenteel geen nieuwe inschrijvingen en heeft geen wachtlijst meer. Als dat verandert, melden we het hier." },
+        { t: "h2", texte: "Wat inschrijving met forfait betekent" },
         { t: "p", texte: "Ingeschreven zijn in een wijkgezondheidscentrum met forfait betekent dat u niet meer betaalt voor uw consultaties huisartsgeneeskunde, algemene kinesitherapie en verpleegkundige zorg. Uw ziekenfonds betaalt het wijkgezondheidscentrum elke maand een vast bedrag om uw zorg te dekken. In ruil komt u voor die zorg naar het wijkgezondheidscentrum." },
         { t: "p", texte: "Er wordt een individueel contract ondertekend tussen u, uw ziekenfonds en het wijkgezondheidscentrum." },
         { t: "h2", texte: "De voorwaarden" },
@@ -72,16 +78,16 @@ export const pagesPratique: Record<string, PageTraduite> = {
           ],
         },
         { t: "aCompleter", texte: "Inschrijvingszone: kaart of lijst van straten toe te voegen." },
-        { t: "h2", texte: "Hoe inschrijven?" },
-        { t: "p", texte: "De inschrijving gebeurt op afspraak en gaat in op de eerste dag van de maand na de ondertekening van het contract. Er is een wachtlijst: neem contact op met het onthaal op 02 424 25 40 om erop te komen.", verifier: true },
-        { t: "aCompleter", texte: "Stand van de inschrijvingen te bevestigen: open, met wachtlijst of gesloten." },
-        { t: "lien", texte: "Het onthaal bellen", href: "tel:+3224242540" },
         { t: "lien", texte: "Waarom het forfait? Onze visie", href: "/philosophie" },
       ],
     },
     en: {
-      soustitre: "What it means and how to do it",
+      soustitre: inscriptionsOuvertes ? "What it means and how to do it" : "Registrations currently closed",
       blocs: [
+        inscriptionsOuvertes
+          ? { t: "encadre", titre: "Registrations are open", texte: "Registration is by appointment: contact reception on 02 424 25 40. It starts on the first day of the month after the contract is signed." }
+          : { t: "encadre", titre: "We are not registering new patients at the moment", texte: "The health centre is not accepting new registrations and no longer has a waiting list for now. If this changes, we will announce it here." },
+        { t: "h2", texte: "What flat-fee registration means" },
         { t: "p", texte: "Registering with a flat-fee health centre means you no longer pay for general practice consultations, general physiotherapy or nursing care. Your health insurance fund pays the health centre a fixed monthly amount to cover your care. In return, you come to the health centre for this care." },
         { t: "p", texte: "An individual contract is signed between you, your health insurance fund and the health centre." },
         { t: "h2", texte: "Conditions" },
@@ -94,10 +100,6 @@ export const pagesPratique: Record<string, PageTraduite> = {
           ],
         },
         { t: "aCompleter", texte: "Registration area: map or list of streets to be added." },
-        { t: "h2", texte: "How to register" },
-        { t: "p", texte: "Registration is by appointment and starts on the first day of the month after the contract is signed. There is a waiting list: contact reception on 02 424 25 40 to be added to it.", verifier: true },
-        { t: "aCompleter", texte: "Registration status to be confirmed: open, waiting list or closed." },
-        { t: "lien", texte: "Call reception", href: "tel:+3224242540" },
         { t: "lien", texte: "Why the flat fee? Our philosophy", href: "/philosophie" },
       ],
     },
@@ -212,7 +214,7 @@ export const pagesPratique: Record<string, PageTraduite> = {
             },
           ],
         },
-        { t: "aCompleter", texte: "Lignes de transport, état des inscriptions et horaires du dispensaire : à vérifier (l'ancien site donnait des informations différentes selon les pages)." },
+        { t: "aCompleter", texte: "Lignes de transport et horaires du dispensaire : à vérifier (l'ancien site donnait des informations différentes selon les pages)." },
       ],
     },
     nl: {
@@ -323,7 +325,7 @@ export const pagesPratique: Record<string, PageTraduite> = {
             },
           ],
         },
-        { t: "aCompleter", texte: "Vervoerslijnen, stand van de inschrijvingen en uren van de verpleegpost: te controleren." },
+        { t: "aCompleter", texte: "Vervoerslijnen en uren van de verpleegpost: te controleren." },
       ],
     },
     en: {
@@ -434,7 +436,7 @@ export const pagesPratique: Record<string, PageTraduite> = {
             },
           ],
         },
-        { t: "aCompleter", texte: "Transport lines, registration status and nursing clinic hours: to be checked." },
+        { t: "aCompleter", texte: "Transport lines and nursing clinic hours: to be checked." },
       ],
     },
   },
