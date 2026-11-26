@@ -1,5 +1,7 @@
 // Informations pratiques de la maison médicale.
 // Source : fichier de contexte du projet. Ne rien modifier sans confirmation de l'équipe.
+import type { Locale } from "@/lib/i18n";
+
 export const contact = {
   rue: "Rue Esseghem 24",
   ville: "1090 Jette",
@@ -8,7 +10,18 @@ export const contact = {
   fax: "02 420 36 90",
   email: "info@mmesseghem.be",
   garde: "1733",
+  gardeLien: "tel:1733",
+  urgences: "112",
+  urgencesLien: "tel:112",
 } as const;
+
+// Heures d'ouverture de l'accueil (heure de Bruxelles) : lundi à vendredi, 8 h à 19 h.
+// Les jours fériés légaux belges sont considérés comme fermés (voir lib/horaires.ts).
+export const ouverture = { jours: [1, 2, 3, 4, 5], debut: 8, fin: 19 } as const;
+
+// Bandeau d'alerte en haut de toutes les pages (fermeture exceptionnelle, congés…).
+// Mettre null pour le masquer. Plus tard, Séverine pourra le gérer depuis l'espace d'administration.
+export const alerte: Record<Locale, string> | null = null;
 
 // Structure du menu (version 1 de la maquette).
 // Les adresses sont les mêmes dans les trois langues ; seuls les libellés changent.
@@ -20,6 +33,7 @@ export const equipe = [
   "psychologue",
   "assistante-sociale",
   "logopedie",
+  "ergotherapie",
   "actrices-en-sante",
   "pole-administratif",
 ] as const;
@@ -49,6 +63,18 @@ export type PoleSlug = (typeof equipe)[number];
 export type PratiqueSlug = (typeof pratique)[number];
 export type ActionSlug = (typeof actions)[number];
 export type MaisonSlug = (typeof maison)[number];
+
+// « Nos soins » sur l'accueil : chaque soin mène à la page du pôle correspondant.
+export const soins = [
+  "medecine-generale",
+  "pole-infirmier",
+  "kinesitherapie",
+  "psychologue",
+  "logopedie",
+  "ergotherapie",
+  "assistante-sociale",
+] as const satisfies readonly PoleSlug[];
+export type SoinSlug = (typeof soins)[number];
 
 // Toutes les pages provisoires, avec leur adresse.
 export const pagesProvisoires: { segments: string[] }[] = [
