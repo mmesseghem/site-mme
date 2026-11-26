@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Contenu from "@/components/Contenu";
+import FormulaireMedicaments from "@/components/FormulaireMedicaments";
+import { getTextesFormulaire } from "@/content/formulaires";
 import { getDictionnaire, type Dictionnaire } from "@/content/dictionnaires";
 import { pagesContenu } from "@/content/pages";
 import { hasLocale, href, locales, type Locale } from "@/lib/i18n";
@@ -78,6 +80,9 @@ export default async function PageProvisoire({ params }: PageProps<"/[lang]/[...
       {contenu ? (
         <section className="wrap section">
           <Contenu blocs={contenu.blocs} lang={page.lang} />
+          {chemin.join("/") === "pratique/demande-medicaments" && (
+            <FormulaireMedicaments t={getTextesFormulaire(page.lang)} />
+          )}
         </section>
       ) : (
       <section className="wrap section">
