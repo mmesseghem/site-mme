@@ -1,6 +1,7 @@
 // Page d'accueil — version B : menu de la version A ; haut de page avec les boutons empilés
 // et le statut d'ouverture à côté ; bloc d'infos pratiques ; urgences ; « Je souhaite… » ;
 // nos soins ; soins au forfait ; activités et La Récré ; « Notre philosophie » en version courte.
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -10,6 +11,9 @@ import StatutOuverture from "@/components/StatutOuverture";
 import { getDictionnaire } from "@/content/dictionnaires";
 import { deuxPoints, hasLocale, href } from "@/lib/i18n";
 import { contact, soins } from "@/lib/site";
+import { planningPublie } from "@/lib/planning-public";
+import AccueilActivites from "@/components/planning/AccueilActivites";
+import type { Locale } from "@/lib/i18n";
 
 function Fleche() {
   return (
@@ -17,6 +21,12 @@ function Fleche() {
       <path d="M4 9h10M10 5l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
+}
+
+// Prochaines activités (14 jours), tirées du planning de l'espace d'administration.
+async function ProchainesActivites({ lang }: { lang: Locale }) {
+  const { activites, categories } = await planningPublie();
+  return <AccueilActivites activites={activites} categories={categories} lang={lang} />;
 }
 
 export default async function Accueil({ params }: PageProps<"/[lang]">) {
@@ -178,7 +188,9 @@ export default async function Accueil({ params }: PageProps<"/[lang]">) {
         <div className="activite">
           <h2>{a.activitesTitre}</h2>
           <p>{a.activitesTexte}</p>
-          <p className="activite-date">{a.prochaineDate}</p>
+          <Suspense fallback={<p className="activite-date">{a.prochaineDate}</p>}>
+            <ProchainesActivites lang={lang} />
+          </Suspense>
           <Link href={href(lang, "/actions/planning")}>{a.activitesLien}</Link>
         </div>
         <div className="activite">

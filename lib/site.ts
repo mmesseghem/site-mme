@@ -95,6 +95,7 @@ export type SoinSlug = (typeof soins)[number];
 export const pagesProvisoires: { segments: string[] }[] = [
   ...equipe.map((s) => ({ segments: ["equipe", s] })),
   ...pratique.map((s) => ({ segments: ["pratique", s] })),
-  ...actions.map((s) => ({ segments: ["actions", s] })),
+  // « planning » a sa propre page (app/[lang]/actions/planning), alimentée par l'espace d'administration.
+  ...actions.filter((s) => s !== "planning").map((s) => ({ segments: ["actions", s] })),
   ...maison.map((s) => ({ segments: [s] })),
 ];

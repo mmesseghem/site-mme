@@ -1486,3 +1486,89 @@ img {
 .archive-numeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 24px; }
 .archive-numero { padding: 18px; border-radius: 16px; background: var(--fond-rose); color: var(--encre); text-decoration: none; display: flex; flex-direction: column; gap: 6px; }
 .archive-numero strong { font-family: var(--titres); font-size: 19px; color: var(--bordeaux); }
+
+/* ---------- Planning des activités ---------- */
+.pl { display: flex; flex-direction: column; gap: 28px; }
+.pl-intro { max-width: 44rem; margin: 0 0 28px; color: var(--gris); }
+.pl-petit { margin: 0; font-size: 15px; color: var(--gris); }
+.pl-vide { padding: 24px 28px; border-radius: 16px; background: var(--fond-rose); max-width: 44rem; }
+.pl-exemple { margin: 0; padding: 12px 16px; border-radius: 12px; background: #fff4d6; border: 1px dashed #c99a2e; color: #5a4210; font-size: 15px; }
+.pl-barre { display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; align-items: center; }
+.pl-vues { display: inline-flex; border: 1.5px solid var(--bordure); border-radius: 999px; background: var(--blanc); padding: 3px; }
+.pl-vues button, .pl-filtres button {
+  display: inline-flex; align-items: center; gap: 6px; border: none; background: none; font: inherit; color: var(--encre);
+  cursor: pointer; border-radius: 999px; padding: 8px 16px; min-height: 40px;
+}
+.pl-vues button[aria-pressed="true"] { background: var(--bordeaux); color: var(--blanc); }
+.pl-filtres { display: flex; flex-wrap: wrap; gap: 8px; }
+.pl-filtres button { border: 1.5px solid var(--bordure); background: var(--blanc); font-size: 15px; }
+.pl-filtres button[aria-pressed="true"] { background: var(--bordeaux); border-color: var(--bordeaux); color: var(--blanc); }
+.pl-mois { margin-bottom: 24px; }
+.pl-mois-titre { margin: 0 0 12px; font-family: var(--titres); font-size: 15px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gris); }
+.pl-liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.pl-ligne { display: flex; gap: 16px; align-items: flex-start; padding: 14px 16px; background: var(--blanc); border: 1.5px solid var(--bordure); border-radius: 16px; }
+.pl-tuile { flex: none; width: 58px; padding: 6px 0; border-radius: 12px; background: var(--fond-rose); color: var(--bordeaux); text-align: center; display: flex; flex-direction: column; }
+.pl-tuile small { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.pl-tuile b { font-family: var(--titres); font-size: 24px; line-height: 1.1; }
+.pl-ligne-corps { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.pl-ligne-haut { display: flex; flex-wrap: wrap; gap: 8px 12px; justify-content: space-between; align-items: center; }
+.pl-ligne-titre { font-family: var(--titres); font-size: 19px; font-weight: 600; color: var(--encre); text-decoration: none; }
+.pl-ligne-titre:hover { color: var(--bordeaux); text-decoration: underline; }
+.pl-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 15px; color: var(--gris); }
+.pl-meta > span { display: inline-flex; align-items: center; gap: 5px; }
+.pl-categorie { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+.pl-etiquette { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--fond-rose); color: var(--bordeaux); white-space: nowrap; }
+.pl-etiquette-annule { background: #fcebeb; color: #a32d2d; }
+.pl-etiquette-direct { background: var(--fond-vert); color: var(--vert-texte); }
+.pl-etiquette-direct::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--vert); }
+.pl-annulee .pl-ligne-titre, .pl-annulee .pl-date-texte { text-decoration: line-through; }
+.pl-annulee { opacity: .8; }
+.pl-plus { align-self: flex-start; background: var(--blanc); font: inherit; font-weight: 600; cursor: pointer; }
+.pl-cal { display: flex; flex-direction: column; gap: 12px; }
+.pl-cal-tete { display: flex; align-items: center; justify-content: space-between; max-width: 560px; }
+.pl-cal-tete .pl-mois-titre { margin: 0; font-size: 17px; color: var(--encre); }
+.pl-cal-tete button { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--bordure); background: var(--blanc); font-size: 22px; cursor: pointer; color: var(--encre); }
+.pl-cal-grille { display: flex; flex-direction: column; gap: 6px; max-width: 560px; }
+.pl-cal-rangee { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.pl-cal-jsem { text-align: center; font-size: 13px; color: var(--gris); text-transform: uppercase; }
+.pl-cal-jour { min-height: 56px; border: 1.5px solid var(--bordure); border-radius: 12px; background: var(--blanc); font: inherit; color: var(--encre); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 4px; }
+.pl-cal-jour[aria-pressed="true"] { border-color: var(--bordeaux); box-shadow: inset 0 0 0 1.5px var(--bordeaux); }
+.pl-cal-auj > span:first-child { background: var(--bordeaux); color: var(--blanc); border-radius: 999px; padding: 0 8px; }
+.pl-cal-passe { color: var(--gris); background: var(--fond); }
+.pl-points { display: flex; gap: 3px; min-height: 8px; }
+.pl-points i { width: 8px; height: 8px; border-radius: 50%; }
+.pl-cal-jourdetail { max-width: 720px; }
+.pl-passe { padding-top: 24px; border-top: 1px solid var(--bordure); display: flex; flex-direction: column; gap: 12px; }
+.pl-passe h2 { margin: 0; font-family: var(--titres); color: var(--bordeaux); font-size: 26px; }
+.pl-passe-grille { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.pl-passe-grille li { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px; border-radius: 16px; background: var(--blanc); border: 1.5px solid var(--bordure); }
+.pl-passe-grille strong { font-family: var(--titres); font-size: 18px; }
+/* Fiche d'une activité */
+.pl-fiche { display: flex; flex-direction: column; gap: 24px; }
+.pl-fiche-tete { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.pl-fiche-titre { margin: 0; font-family: var(--titres); color: var(--bordeaux); font-size: clamp(30px, 5vw, 44px); line-height: 1.1; }
+.pl-fiche-resume { margin: 0; font-size: 19px; color: var(--gris); max-width: 44rem; }
+.pl-fiche-grille { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.pl-fiche-texte { display: flex; flex-direction: column; gap: 14px; }
+.pl-fiche-infos { padding: 22px; border-radius: 20px; background: var(--blanc); border: 1.5px solid var(--bordure); display: flex; flex-direction: column; gap: 14px; }
+.pl-fiche-infos dl { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.pl-fiche-infos dt { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--vert-texte); }
+.pl-fiche-infos dd { margin: 4px 0 0; }
+.pl-fiche-sous { margin: 4px 0 0; font-family: var(--titres); font-size: 18px; }
+.pl-fiche-dates { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.pl-fiche-dates li { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--bordure); }
+.pl-date-texte { font-weight: 600; }
+.pl-fiche-infos .bouton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px; }
+/* Bloc de l'accueil */
+.acc-pl { list-style: none; margin: 4px 0 14px; padding: 0; display: flex; flex-direction: column; }
+.acc-pl li { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--bordure); }
+.acc-pl-icone { flex: none; color: var(--gris); display: inline-flex; }
+.activite .acc-pl-corps { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.activite .acc-pl-corps a { color: var(--encre); }
+.acc-pl-corps > span { font-size: 15px; color: var(--gris); }
+@media (max-width: 760px) {
+  .pl-fiche-grille { grid-template-columns: minmax(0, 1fr); }
+  .pl-ligne { gap: 12px; padding: 12px; }
+  .pl-tuile { width: 50px; }
+  .pl-cal-jour { min-height: 46px; }
+}
