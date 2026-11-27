@@ -20,7 +20,8 @@ Organisation du code :
 - `content/formulaires.ts` et `app/actions/medicaments.ts` : le formulaire de demande de médicaments (textes, puis envoi par e-mail via Mailjet).
 - `lib/site.ts` : coordonnées, horaires, structure du menu, et les réglages simples : `alerte` (bandeau en haut du site), `inscriptionsOuvertes` (page « S'inscrire »), `medecins` (liste du formulaire ; vide = champ masqué).
 - `lib/horaires.ts` : le statut d'ouverture en temps réel (heure de Bruxelles, jours fériés belges).
-- `supabase/migrations/` : la structure de la base de données de l'espace d'administration et ses règles de sécurité.
+- `supabase/migrations/` : la structure de la base de données de l'espace d'administration et ses règles de sécurité. Fichiers déjà appliqués dans Supabase : `0001_fondations.sql`, `0002_planning.sql`.
+- `lib/planning.ts` : le planning (règle de répétition, calcul des séances, temps forts) ; `lib/planning-public.ts` : lecture des activités publiées ; `components/planning/` : page publique, fiche d'activité, bloc de l'accueil ; `app/admin/planning-actions.ts` et `app/admin/(prive)/planning/` : l'éditeur de l'espace d'administration ; `content/planning.ts` : les textes fixes du planning (FR/NL/EN).
 - `.env.example` : la liste des réglages secrets à saisir dans Vercel (sans aucune valeur).
 - `components/` : en-tête, pied de page et éléments réutilisés.
 - `app/globals.css` : la charte graphique (couleurs, polices, mise en page).
@@ -39,6 +40,7 @@ Organisation du code :
 - **Formulaire de médicaments** : envoi par e-mail (Mailjet) à l'adresse réglée dans Vercel ; en « mode test » tant que les réglages manquent ; anti-spam (champ piège, délai minimum, limite par appareil) ; jamais de faux « envoyé ».
 - **Espace d'administration** (décisions du 26/11/2026) : comptes sur invitation seulement (Michaël administrateur), connexion par lien e-mail + code sur le téléphone, rôles (administrateur, contenu, accueil, lecture), journal des actions, demandes de médicaments gardées 30 jours puis effacées. La sécurité passe avant tout : l'ancien site a été piraté par un accès d'administration.
 - **Newsletter** : écrite dans l'espace d'administration, publiée à la fois sur le site et par e-mail (Mailjet garde les inscrits). Trois langues ; chaque inscrit reçoit la sienne (français par défaut, lien pour changer). Traduction proposée par DeepL et relue avant publication ; publication bloquée tant qu'une langue manque.
+- **Planning des activités** (décisions du 27/11/2026) : géré par Séverine dans l'espace d'administration, sans Google Agenda. Catégories créées par l'équipe (nom FR/NL/EN, une des 3 couleurs de la charte, une icône) ; une catégorie utilisée se masque au lieu d'être supprimée. Une activité = une règle de répétition (une fois ; chaque semaine, jours au choix, toutes les N semaines ; chaque mois, date fixe ou « 2e mardi » ; fin à une date ou après N séances), plus pauses et séances annulées ou déplacées. **Temps forts** (activités exceptionnelles, cochées d'office si ponctuelles) : mis en avant dans « À ne pas manquer » et en tête de l'accueil, 2 mois avant par défaut ou dès la date choisie. Inscription : informations seulement (comment, date limite, places) ; l'inscription en ligne viendra plus tard avec sa mention RGPD. Page publique : vue Liste en trois parties (À ne pas manquer / Chaque semaine, uniquement les hebdomadaires / Agenda, où les mensuelles indiquent leur rythme) ou Calendrier ; « Déjà réalisé » montre les activités terminées depuis moins de 12 mois ; effacement automatique 2 ans après la dernière séance. Accueil : temps forts (2 au maximum) puis activités des 14 prochains jours, 4 lignes au total. Photos des activités : à faire avec celles de la newsletter.
 - **Photos** : en priorité les vraies photos de la MME. Banques d'images gratuites seulement pour des visuels neutres.
 
 ## Qui modifie quoi
@@ -57,7 +59,8 @@ Tout ce qui est écrit ici peut être lu par n'importe qui. Il ne doit donc jama
 - Explique en une ou deux phrases ce que tu as changé et pourquoi, en termes simples.
 - Quand une décision change, propose de mettre à jour ce fichier.
 - Une conversation par chantier (ou par branche) : en fin de chantier, propose de mettre à jour ce fichier et le fichier de contexte du projet Claude.
-- La version de travail la plus complète est la branche `contenu-pages` (pas encore fusionnée dans `main`) : pars de là pour les nouveaux chantiers, sauf indication contraire. La branche `espace-admin` (fondations de l'espace d'administration) attend l'accord de Michaël.
+- La branche principale `main` contient tout le travail validé (contenu des pages, espace d'administration, planning : fusionnés le 27/11/2026). Pars de `main` pour chaque nouveau chantier.
+- Base de données : un nouveau fichier dans `supabase/migrations/` n'est appliqué qu'à la main, par Michaël (Supabase > SQL Editor), après son accord. Teste-le d'abord sur une base d'essai et donne-lui le texte exact à coller. Claude n'a pas d'accès direct à Supabase (choix de sécurité).
 
 ## Liste de contrôle avant publication
 1. **Cohérence** : charte respectée (couleurs et polices ci-dessus), structure du menu, style de la maquette version 1.
