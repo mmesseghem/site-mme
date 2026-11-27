@@ -15,7 +15,7 @@ import { iconesCategories } from "@/components/IconesPlanning";
 const rolesEdition = ["administrateur", "contenu"] as const;
 export type Resultat = { ok?: string; erreur?: string };
 
-const COLONNES = "id, titre, description, blocs, categorie_id, public_vise, lieu_type, lieu, gratuit, prix, heure_debut, heure_fin, repetition, pauses, exceptions, premiere_date, derniere_date, vitrine, publiee, modifiee_le";
+const COLONNES = "id, titre, description, blocs, categorie_id, public_vise, lieu_type, lieu, gratuit, prix, heure_debut, heure_fin, repetition, pauses, exceptions, premiere_date, derniere_date, vitrine, temps_fort, annonce_des, inscription_requise, infos_inscription, inscription_avant, places, publiee, modifiee_le";
 const texteCourt = (s: unknown, max: number) => (typeof s === "string" ? s.trim().slice(0, max) : "");
 const heure = (s: unknown) => (typeof s === "string" && estHeure(s.slice(0, 5)) ? s.slice(0, 5) : null);
 
@@ -80,6 +80,12 @@ function nettoyerActivite(a: Partial<DonneesActivite>): { propre?: DonneesActivi
     pauses: nettoyerPauses(a.pauses),
     exceptions: nettoyerExceptions(a.exceptions),
     vitrine: a.vitrine !== false,
+    temps_fort: Boolean(a.temps_fort),
+    annonce_des: a.temps_fort && estDate(a.annonce_des) ? a.annonce_des : null,
+    inscription_requise: Boolean(a.inscription_requise),
+    infos_inscription: a.inscription_requise ? nettoyerTextes(a.infos_inscription, 300) : nettoyerTextes({}, 0),
+    inscription_avant: a.inscription_requise && estDate(a.inscription_avant) ? a.inscription_avant : null,
+    places: a.inscription_requise && Number(a.places) >= 1 ? Math.min(10000, Math.round(Number(a.places))) : null,
   };
   if (propre.lieu_type === "ailleurs" && !propre.lieu) return { erreur: "Indiquez l'adresse ou le point de rendez-vous." };
   const { premiere, derniere } = bornes(propre);
@@ -93,7 +99,7 @@ export async function creerActivite() {
   const aujourdhui = maintenantBruxelles().date;
   const vide = { fr: "", nl: "", en: "" };
   const { data } = await supabase.from("activites").insert({
-    titre: vide, description: vide, public_vise: vide,
+    titre: vide, description: vide, public_vise: vide, infos_inscription: vide, temps_fort: true,
     blocs: [{ id: crypto.randomUUID(), type: "texte", textes: vide }],
     repetition: regleParDefaut(aujourdhui), premiere_date: aujourdhui, derniere_date: aujourdhui,
   }).select("id").single<{ id: string }>();

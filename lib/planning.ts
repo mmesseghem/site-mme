@@ -47,6 +47,12 @@ export type Activite = {
   premiere_date: string | null;
   derniere_date: string | null;
   vitrine: boolean;
+  temps_fort: boolean;
+  annonce_des: string | null;     // vide = 2 mois avant la séance
+  inscription_requise: boolean;
+  infos_inscription: Textes;      // comment s'inscrire
+  inscription_avant: string | null;
+  places: number | null;
   publiee: boolean;
   modifiee_le?: string;
 };
@@ -234,11 +240,41 @@ export function resumeRegle(r: Repetition, lang: Locale): string {
   return base + fin;
 }
 
-/** Langues encore incomplètes (titre, résumé ou un bloc vide). */
-export function languesManquantesActivite(a: Pick<Activite, "titre" | "description" | "blocs">): Locale[] {
+/** Langues encore incomplètes (titre, résumé, un bloc vide, ou les infos d'inscription si elle est obligatoire). */
+export function languesManquantesActivite(a: Pick<Activite, "titre" | "description" | "blocs"> & Partial<Pick<Activite, "inscription_requise" | "infos_inscription">>): Locale[] {
   return (["fr", "nl", "en"] as Locale[]).filter(
-    (l) => !a.titre[l]?.trim() || !a.description[l]?.trim() || a.blocs.some((b) => !b.textes[l]?.trim()),
+    (l) => !a.titre[l]?.trim() || !a.description[l]?.trim() || a.blocs.some((b) => !b.textes[l]?.trim())
+      || Boolean(a.inscription_requise && !a.infos_inscription?.[l]?.trim()),
   );
+}
+
+// ---------- Temps forts ----------
+export const MOIS_ANNONCE = 2;
+export function ajouterMois(d: string, n: number): string {
+  const x = versUTC(d); const j = x.getUTCDate();
+  x.setUTCDate(1); x.setUTCMonth(x.getUTCMonth() + n);
+  const nb = new Date(Date.UTC(x.getUTCFullYear(), x.getUTCMonth() + 1, 0)).getUTCDate();
+  x.setUTCDate(Math.min(j, nb)); return versTexte(x);
+}
+/** Date à partir de laquelle un temps fort est mis en avant pour sa prochaine séance. */
+export function dateAnnonce(a: Pick<Activite, "annonce_des">, prochaine: string): string {
+  return a.annonce_des && a.annonce_des < prochaine ? a.annonce_des : ajouterMois(prochaine, -MOIS_ANNONCE);
+}
+/** Prochaine séance non annulée d'un temps fort déjà annoncé (sinon null). */
+export function tempsFortAnnonce(a: Activite, aujourdhui: string): Seance | null {
+  if (!a.temps_fort) return null;
+  const s = seances(a).find((x) => !x.annulee && x.date >= aujourdhui);
+  return s && dateAnnonce(a, s.date) <= aujourdhui ? s : null;
+}
+
+/** « Le lundi », « Le lundi et le jeudi », « Un mercredi sur deux » (pour la partie « Chaque semaine »). */
+export function resumeHebdo(r: Repetition, lang: Locale): string {
+  const j = [...r.jours].sort().map((i) => nomsJours[lang][i]);
+  const et = { fr: " et le ", nl: " en ", en: " and " }[lang];
+  const liste = j.length <= 1 ? j.join("") : j.slice(0, -1).join(lang === "fr" ? ", le " : ", ") + et + j[j.length - 1];
+  if (r.intervalle === 2) return { fr: `Un ${liste.replace(/, le | et le /g, " et un ")} sur deux`, nl: `Om de twee weken op ${liste}`, en: `Every other ${liste}` }[lang];
+  if (r.intervalle > 2) return { fr: `Toutes les ${r.intervalle} semaines, le ${liste}`, nl: `Om de ${r.intervalle} weken op ${liste}`, en: `Every ${r.intervalle} weeks on ${liste}` }[lang];
+  return { fr: `Le ${liste}`, nl: `Elke ${liste}`, en: `Every ${liste}` }[lang];
 }
 
 // ---------- Catégories : apparence ----------
@@ -260,5 +296,11 @@ export function lireActivite(x: Activite): Activite {
     repetition: estDate(x.repetition?.premier) ? { ...regleParDefaut(x.repetition.premier), ...x.repetition } : regleParDefaut(x.premiere_date ?? "2026-01-01"),
     pauses: Array.isArray(x.pauses) ? x.pauses : [],
     exceptions: Array.isArray(x.exceptions) ? x.exceptions : [],
+    temps_fort: Boolean(x.temps_fort),
+    annonce_des: x.annonce_des ?? null,
+    inscription_requise: Boolean(x.inscription_requise),
+    infos_inscription: { ...vide, ...x.infos_inscription },
+    inscription_avant: x.inscription_avant ?? null,
+    places: x.places ?? null,
   };
 }

@@ -15,6 +15,20 @@ export function PastilleCategorie({ c, lang }: { c: Pick<Categorie, "nom" | "cou
   );
 }
 
+export function Inscription({ a, lang }: { a: Activite; lang: Locale }) {
+  const t = textesPlanning[lang];
+  const morceaux = [
+    a.inscription_avant ? t.inscriptionAvant(formatDate(a.inscription_avant, lang, { day: "numeric", month: "long" })) : t.inscriptionObligatoire,
+    a.places ? t.places(a.places) : null,
+  ].filter(Boolean);
+  return (
+    <span className="pl-inscription">
+      <IconePlanning nom="creatif" taille={16} /> <strong>{morceaux.join(" · ")}</strong>
+      {a.infos_inscription[lang] && <span>{a.infos_inscription[lang]}</span>}
+    </span>
+  );
+}
+
 export default function FicheActivite({ a, categorie, lang, toutesSeances, aujourdhui, lienAgenda }: {
   a: Activite; categorie: Categorie | null; lang: Locale; toutesSeances: Seance[]; aujourdhui: string | null; lienAgenda?: string;
 }) {
@@ -24,7 +38,10 @@ export default function FicheActivite({ a, categorie, lang, toutesSeances, aujou
   return (
     <article className="pl-fiche" lang={lang}>
       <header className="pl-fiche-tete">
-        {categorie && <PastilleCategorie c={categorie} lang={lang} />}
+        <span style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {a.temps_fort && <span className="pl-etiquette pl-etiquette-fort"><IconePlanning nom="etoile" taille={14} /> {t.tempsFort}</span>}
+          {categorie && <PastilleCategorie c={categorie} lang={lang} />}
+        </span>
         <h1 className="pl-fiche-titre">{a.titre[lang] || "…"}</h1>
         {a.description[lang] && <p className="pl-fiche-resume">{a.description[lang]}</p>}
       </header>
@@ -51,6 +68,7 @@ export default function FicheActivite({ a, categorie, lang, toutesSeances, aujou
               <dd>{a.lieu_type === "mme" ? <>{t.aLaMme}<br />Rue Esseghem 24, 1090 Jette{a.lieu ? <><br />{a.lieu}</> : null}</> : a.lieu}</dd></div>
             {a.public_vise[lang] && <div><dt><IconePlanning nom="public" /> {t.pourQui}</dt><dd>{a.public_vise[lang]}</dd></div>}
             <div><dt><IconePlanning nom="info" /> {t.prix}</dt><dd>{a.gratuit ? t.gratuit : a.prix}</dd></div>
+            {a.inscription_requise && <div><dt><IconePlanning nom="creatif" /> {t.inscription}</dt><dd><Inscription a={a} lang={lang} /></dd></div>}
           </dl>
           {montrees.length > 0 && (
             <>

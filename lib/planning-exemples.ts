@@ -12,7 +12,8 @@ export function exemplesPlanning(): { activites: Activite[]; categories: Categor
     { id: "00000000-0000-4000-8000-000000000002", nom: t("Ateliers et rencontres", "Workshops en ontmoetingen", "Workshops and meetings"), couleur: "bordeaux", icone: "discussion", ordre: 2, masquee: false },
     { id: "00000000-0000-4000-8000-000000000003", nom: t("Parents-enfants", "Ouders en kinderen", "Parents and children"), couleur: "gris", icone: "enfants", ordre: 3, masquee: false },
   ];
-  const base = { blocs: [], public_vise: vide, gratuit: true, prix: null, pauses: [], exceptions: [], premiere_date: null, derniere_date: null, vitrine: true, publiee: true };
+  const base = { blocs: [], public_vise: vide, gratuit: true, prix: null, pauses: [], exceptions: [], premiere_date: null, derniere_date: null, vitrine: true, publiee: true,
+    temps_fort: false, annonce_des: null, inscription_requise: false, infos_inscription: vide, inscription_avant: null, places: null };
   const texte = (fr: string, nl: string, en: string) => [{ id: "b1", type: "texte" as const, textes: t(fr, nl, en) }];
   const activites: Activite[] = [
     {
@@ -40,6 +41,25 @@ export function exemplesPlanning(): { activites: Activite[]; categories: Categor
       blocs: texte("Texte d'exemple.", "Voorbeeldtekst.", "Example text."),
       lieu_type: "mme", lieu: null, heure_debut: "18:00", heure_fin: "19:30",
       repetition: { premier: "2026-11-19", frequence: "mois", intervalle: 1, jours: [3], mensuel: "rang", fin: { type: "nombre", n: 6 } },
+    },
+    {
+      ...base, id: "00000000-0000-4000-9000-000000000005", categorie_id: categories[1].id,
+      titre: t("Conférence santé (exemple)", "Gezondheidslezing (voorbeeld)", "Health talk (example)"),
+      description: t("Un temps fort, mis en avant à l'avance, avec inscription.", "Een hoogtepunt, vooraf aangekondigd, met inschrijving.", "A highlight, announced in advance, with registration."),
+      blocs: texte("Texte d'exemple.", "Voorbeeldtekst.", "Example text."),
+      lieu_type: "mme", lieu: null, heure_debut: "19:00", heure_fin: "20:30",
+      repetition: { premier: "2027-01-14", frequence: "une", intervalle: 1, jours: [3], mensuel: "rang", fin: { type: "nombre", n: 1 } },
+      temps_fort: true, annonce_des: "2026-11-15", inscription_requise: true, places: 30, inscription_avant: "2027-01-08",
+      infos_inscription: t("À l'accueil (exemple).", "Aan het onthaal (voorbeeld).", "At reception (example)."),
+    },
+    {
+      ...base, id: "00000000-0000-4000-9000-000000000006", categorie_id: categories[0].id,
+      titre: t("Fête de quartier (exemple)", "Buurtfeest (voorbeeld)", "Neighbourhood party (example)"),
+      description: t("Un temps fort sans inscription.", "Een hoogtepunt zonder inschrijving.", "A highlight with no registration."),
+      blocs: texte("Texte d'exemple.", "Voorbeeldtekst.", "Example text."),
+      lieu_type: "ailleurs", lieu: "Parc (exemple)", heure_debut: "14:00", heure_fin: "18:00",
+      repetition: { premier: "2026-12-12", frequence: "une", intervalle: 1, jours: [5], mensuel: "rang", fin: { type: "nombre", n: 1 } },
+      temps_fort: true,
     },
     {
       ...base, id: "00000000-0000-4000-9000-000000000004", categorie_id: categories[0].id,

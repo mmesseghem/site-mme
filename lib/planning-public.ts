@@ -22,7 +22,7 @@ export async function planningPublie(): Promise<DonneesPlanning> {
   });
   // Le public ne voit que les activités publiées (règle de la base) ; on le redemande quand même.
   const [a, c] = await Promise.all([
-    client.from("activites").select("id, titre, description, blocs, categorie_id, public_vise, lieu_type, lieu, gratuit, prix, heure_debut, heure_fin, repetition, pauses, exceptions, premiere_date, derniere_date, vitrine, publiee")
+    client.from("activites").select("id, titre, description, blocs, categorie_id, public_vise, lieu_type, lieu, gratuit, prix, heure_debut, heure_fin, repetition, pauses, exceptions, premiere_date, derniere_date, vitrine, temps_fort, annonce_des, inscription_requise, infos_inscription, inscription_avant, places, publiee")
       .eq("publiee", true).order("premiere_date").returns<Activite[]>(),
     client.from("categories_activites").select("id, nom, couleur, icone, ordre, masquee").order("ordre").returns<Categorie[]>(),
   ]);

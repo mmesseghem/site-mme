@@ -5,7 +5,7 @@ import { useMemo, useState, useTransition } from "react";
 import type { Locale } from "@/lib/i18n";
 import { libellesBlocs, textesVides, type Bloc, type Textes, type TypeBloc } from "@/lib/newsletter";
 import {
-  datesDeLaRegle, formatDate, formatPlage, jourSemaine, languesManquantesActivite, maintenantBruxelles, nomsJours, resumeRegle, seances,
+  dateAnnonce, datesDeLaRegle, formatDate, formatPlage, jourSemaine, languesManquantesActivite, maintenantBruxelles, nomsJours, resumeRegle, seances,
   type Activite, type Categorie, type Exception, type Repetition,
 } from "@/lib/planning";
 import FicheActivite from "@/components/planning/FicheActivite";
@@ -53,13 +53,13 @@ export default function EditeurActivite({ activite, categories, lectureSeule }: 
     const r = await publierActivite(a.id, publier); setMessage(r); if (r.ok) setPubliee(publier);
   });
   const traduire = (vers: "nl" | "en") => demarrer(async () => {
-    const sources = [a.titre.fr, a.description.fr, a.public_vise.fr, ...a.blocs.map((b) => b.textes.fr)];
+    const sources = [a.titre.fr, a.description.fr, a.public_vise.fr, a.infos_inscription.fr, ...a.blocs.map((b) => b.textes.fr)];
     const r = await proposerTraductionPlanning(sources, vers);
     if (r.erreur || !r.textes) { setMessage({ erreur: r.erreur }); return; }
-    const [titre, description, publicVise, ...blocs] = r.textes;
+    const [titre, description, publicVise, infosInscription, ...blocs] = r.textes;
     setA((x) => ({
       ...x,
-      titre: { ...x.titre, [vers]: titre }, description: { ...x.description, [vers]: description }, public_vise: { ...x.public_vise, [vers]: publicVise },
+      titre: { ...x.titre, [vers]: titre }, description: { ...x.description, [vers]: description }, public_vise: { ...x.public_vise, [vers]: publicVise }, infos_inscription: { ...x.infos_inscription, [vers]: infosInscription },
       blocs: x.blocs.map((b, i) => ({ ...b, textes: { ...b.textes, [vers]: blocs[i] ?? "" } })),
     }));
     setARelire((l) => [...new Set([...l, vers])]); setModifie(true);
@@ -178,7 +178,11 @@ export default function EditeurActivite({ activite, categories, lectureSeule }: 
                 <input type="date" value={r.premier} disabled={fermer} onChange={(e) => e.target.value && regle({ premier: e.target.value, jours: r.frequence === "semaine" ? r.jours : [jourSemaine(e.target.value)] })} />
               </label>
               <label>Se répète
-                <select value={r.frequence} disabled={fermer} onChange={(e) => regle({ frequence: e.target.value as Repetition["frequence"], jours: r.jours.length ? r.jours : [jourSemaine(r.premier)] })}>
+                <select value={r.frequence} disabled={fermer} onChange={(e) => {
+                  const frequence = e.target.value as Repetition["frequence"];
+                  // Une activité ponctuelle est proposée comme « temps fort » ; une activité régulière ne l'est pas (modifiable ensuite).
+                  changer({ repetition: { ...r, frequence, jours: r.jours.length ? r.jours : [jourSemaine(r.premier)] }, temps_fort: frequence === "une" });
+                }}>
                   <option value="une">Une seule fois</option>
                   <option value="semaine">Chaque semaine</option>
                   <option value="mois">Chaque mois</option>
@@ -318,6 +322,49 @@ export default function EditeurActivite({ activite, categories, lectureSeule }: 
                 </button>
               )}
             </div>
+          </section>
+
+          {/* ---------- Mise en avant et inscription ---------- */}
+          <section style={carte} aria-labelledby="t-avant">
+            <h2 id="t-avant" className="admin-surtitre">MISE EN AVANT ET INSCRIPTION</h2>
+            <label style={enLigne}>
+              <input type="checkbox" checked={a.temps_fort} disabled={fermer} onChange={(e) => changer({ temps_fort: e.target.checked })} />
+              <span><strong>Temps fort</strong> : activité exceptionnelle, mise en avant dans « À ne pas manquer » et sur l&apos;accueil</span>
+            </label>
+            {a.temps_fort && (
+              <div style={ligne}>
+                <label>Annoncer à partir du
+                  <input type="date" value={a.annonce_des ?? ""} disabled={fermer} max={liste.find((s) => s.date >= aujourdhui)?.date}
+                    onChange={(e) => changer({ annonce_des: e.target.value || null })} />
+                </label>
+                <span className="admin-petit" style={{ paddingBottom: 12 }}>
+                  {a.annonce_des ? "" : "Vide : 2 mois avant la séance. "}
+                  {(() => { const p = liste.find((s) => !s.annulee && s.date >= aujourdhui); return p ? `Mise en avant dès le ${formatDate(dateAnnonce(a, p.date), "fr", { day: "numeric", month: "long", year: "numeric" })}.` : ""; })()}
+                </span>
+              </div>
+            )}
+            <label style={enLigne}>
+              <input type="checkbox" checked={a.inscription_requise} disabled={fermer} onChange={(e) => changer({ inscription_requise: e.target.checked })} />
+              <strong>Inscription obligatoire</strong>
+            </label>
+            {a.inscription_requise && (
+              <>
+                <label>Comment s&apos;inscrire ? ({langue.toUpperCase()})
+                  <input value={a.infos_inscription[langue]} maxLength={300} disabled={fermer} placeholder="À l'accueil ou au 02 424 25 40"
+                    onChange={(e) => changer({ infos_inscription: { ...a.infos_inscription, [langue]: e.target.value } })} />
+                </label>
+                <div style={ligne}>
+                  <label>Date limite (facultatif)
+                    <input type="date" value={a.inscription_avant ?? ""} disabled={fermer} onChange={(e) => changer({ inscription_avant: e.target.value || null })} />
+                  </label>
+                  <label>Nombre de places (facultatif)
+                    <input type="number" min={1} max={10000} step={1} style={{ width: 110 }} value={a.places ?? ""} disabled={fermer}
+                      onChange={(e) => changer({ places: e.target.value ? Math.max(1, Math.round(Number(e.target.value))) : null })} />
+                  </label>
+                </div>
+                <span className="admin-petit">L&apos;inscription en ligne viendra plus tard. Pour l&apos;instant, le site affiche ces informations.</span>
+              </>
+            )}
           </section>
         </div>
 

@@ -2,7 +2,8 @@
 --
 -- À exécuter une fois dans Supabase (SQL Editor), APRÈS 0001_fondations.sql, avec l'accord de Michaël.
 -- Ce fichier ne contient aucun secret ni aucune donnée personnelle : une activité décrit un atelier, pas une personne.
--- (Les inscriptions aux activités viendront plus tard, dans un fichier séparé, avec leur propre mention RGPD.)
+-- Les colonnes « inscription_requise » et « places » (déjà créées par 0001) servent à afficher « inscription obligatoire »
+-- et « places limitées ». (L'inscription en ligne viendra plus tard, dans un fichier séparé, avec leur propre mention RGPD.)
 --
 -- Principe : on n'enregistre pas chaque séance une par une. On enregistre la RÈGLE de répétition
 -- (« chaque lundi jusqu'au 31 janvier »), plus les exceptions (séance annulée, déplacée) et les pauses (vacances).
@@ -59,10 +60,17 @@ alter table public.activites
   add column exceptions jsonb not null default '[]'::jsonb,   -- [{ "date": "...", "annulee": true }] ou séance déplacée
   add column premiere_date date,   -- calculées par le site à chaque enregistrement (tri, vitrine, effacement)
   add column derniere_date date,
-  add column vitrine boolean not null default true;            -- visible dans « Déjà réalisé » une fois terminée
+  add column vitrine boolean not null default true,            -- visible dans « Déjà réalisé » une fois terminée
+  -- Temps forts : activités exceptionnelles, mises en avant (« À ne pas manquer ») et annoncées à l'avance.
+  add column temps_fort boolean not null default false,
+  add column annonce_des date,                                 -- vide = 2 mois avant la séance
+  -- Inscription (informations seulement : l'inscription en ligne viendra plus tard, avec sa mention RGPD)
+  add column infos_inscription jsonb not null default '{}'::jsonb,  -- { "fr": "À l'accueil ou au 02 424 25 40", ... }
+  add column inscription_avant date;
 
 alter table public.activites
-  add constraint activites_prix_court check (prix is null or char_length(prix) <= 60);
+  add constraint activites_prix_court check (prix is null or char_length(prix) <= 60),
+  add constraint activites_places_positives check (places is null or places between 1 and 10000);
 create index activites_dates on public.activites (derniere_date, premiere_date);
 
 -- ---------- Effacement automatique ----------

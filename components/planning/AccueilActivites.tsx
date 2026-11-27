@@ -5,10 +5,11 @@ import Link from "next/link";
 import { href, type Locale } from "@/lib/i18n";
 import { textesPlanning } from "@/content/planning";
 import IconePlanning from "@/components/IconesPlanning";
-import { ajouterJours, couleurs, formatDate, formatHeure, jourSemaine, seances, type Activite, type Categorie, type Seance } from "@/lib/planning";
+import { ajouterJours, couleurs, formatDate, formatHeure, jourSemaine, seances, tempsFortAnnonce, type Activite, type Categorie, type Seance } from "@/lib/planning";
 import { useMaintenant } from "./useMaintenant";
 
 const MAX_LIGNES = 4;
+const MAX_FORTS = 2;
 
 export default function AccueilActivites({ activites, categories, lang }: { activites: Activite[]; categories: Categorie[]; lang: Locale }) {
   const t = textesPlanning[lang];
@@ -25,7 +26,13 @@ export default function AccueilActivites({ activites, categories, lang }: { acti
     .filter((g) => g.s.length)
     .sort((x, y) => (x.s[0].date + x.s[0].heureDebut).localeCompare(y.s[0].date + y.s[0].heureDebut));
 
-  if (!groupes.length) {
+  // Temps forts déjà annoncés : en premier, même au-delà de 14 jours (2 au maximum).
+  const forts = activites.flatMap((a) => { const s = tempsFortAnnonce(a, auj); return s && !finie(s) ? [{ a, s }] : []; })
+    .sort((x, y) => x.s.date.localeCompare(y.s.date)).slice(0, MAX_FORTS);
+  const idsForts = new Set(forts.map((f) => f.a.id));
+  const autres = groupes.filter((g) => !idsForts.has(g.a.id));
+
+  if (!forts.length && !groupes.length) {
     const prochaine = activites.flatMap((a) => seances(a).filter((s) => !s.annulee && s.date > limite).map((s) => ({ a, s })))
       .sort((x, y) => x.s.date.localeCompare(y.s.date))[0];
     return prochaine ? (
@@ -37,10 +44,23 @@ export default function AccueilActivites({ activites, categories, lang }: { acti
   }
 
   const cat = new Map(categories.map((c) => [c.id, c]));
-  const montres = groupes.slice(0, MAX_LIGNES);
+  const montres = autres.slice(0, MAX_LIGNES - forts.length);
   return (
     <>
       <ul className="acc-pl">
+        {forts.map(({ a, s }) => (
+          <li key={a.id} className="acc-pl-fort">
+            <span className="acc-pl-icone"><IconePlanning nom="etoile" /></span>
+            <span className="acc-pl-corps">
+              <Link href={href(lang, `/actions/planning/${a.id}`)}>{a.titre[lang]}</Link>
+              <span>
+                {capitaliser(formatDate(s.date, lang, { weekday: "long", day: "numeric", month: "long" }))} · {formatHeure(s.heureDebut, lang)}
+                {a.inscription_requise ? ` · ${a.inscription_avant ? t.inscriptionAvant(formatDate(a.inscription_avant, lang, { day: "numeric", month: "long" })) : t.inscriptionObligatoire}` : ""}
+              </span>
+            </span>
+            <span className="pl-etiquette pl-etiquette-fort">{s.date === auj ? t.aujourdhui : s.date === demain ? t.demain : t.tempsFort}</span>
+          </li>
+        ))}
         {montres.map(({ a, s }) => {
           const c = a.categorie_id ? cat.get(a.categorie_id) : undefined;
           const p = s[0];
@@ -60,7 +80,7 @@ export default function AccueilActivites({ activites, categories, lang }: { acti
           );
         })}
       </ul>
-      {groupes.length > MAX_LIGNES && <p className="activite-date">{t.accueilAutres(groupes.length - MAX_LIGNES)}</p>}
+      {autres.length > montres.length && <p className="activite-date">{t.accueilAutres(autres.length - montres.length)}</p>}
     </>
   );
 }

@@ -11,6 +11,10 @@ export type TextesPlanning = {
   joursCourts: string[]; choisirJour: string; rienCeJour: string; voirFiche: string;
   accueilTitre: string; accueilTout: string; accueilAutres: (n: number) => string; accueilProchaine: string; accueilVide: string;
   infoPratique: string; chargement: string;
+  neManquer: string; chaqueSemaine: string; agenda: string; tempsFort: string; inscription: string;
+  inscriptionObligatoire: string; inscriptionAvant: (d: string) => string; places: (n: number) => string;
+  prochaine: (d: string) => string; pasDeSeance: (d: string) => string; changementLe: (d: string) => string;
+  derniere: (d: string) => string; agendaVide: string; voirSuite: string;
 };
 
 export const textesPlanning: Record<Locale, TextesPlanning> = {
@@ -30,6 +34,10 @@ export const textesPlanning: Record<Locale, TextesPlanning> = {
     accueilTitre: "Ces deux prochaines semaines", accueilTout: "Voir tout le planning",
     accueilAutres: (n) => `+ ${n} autre${n > 1 ? "s" : ""} activité${n > 1 ? "s" : ""}`, accueilProchaine: "Prochaine activité",
     accueilVide: "Le programme des prochaines activités arrive bientôt.",
+    neManquer: "À ne pas manquer", chaqueSemaine: "Chaque semaine", agenda: "Agenda", tempsFort: "Temps fort", inscription: "Inscription",
+    inscriptionObligatoire: "Inscription obligatoire", inscriptionAvant: (d) => `Inscription avant le ${d}`, places: (n) => `${n} places`,
+    prochaine: (d) => `Prochaine : ${d}`, pasDeSeance: (d) => `Pas de séance le ${d}`, changementLe: (d) => `Changement le ${d}`,
+    derniere: (d) => `Dernière séance : ${d}`, agendaVide: "Pas d'autre activité prévue pour ces semaines.", voirSuite: "Voir les semaines suivantes",
     infoPratique: "Infos pratiques", chargement: "Chargement du planning…",
   },
   nl: {
@@ -48,6 +56,10 @@ export const textesPlanning: Record<Locale, TextesPlanning> = {
     accueilTitre: "De komende twee weken", accueilTout: "Volledige planning bekijken",
     accueilAutres: (n) => `+ nog ${n} ${n > 1 ? "activiteiten" : "activiteit"}`, accueilProchaine: "Volgende activiteit",
     accueilVide: "Het programma van de volgende activiteiten volgt binnenkort.",
+    neManquer: "Niet te missen", chaqueSemaine: "Elke week", agenda: "Agenda", tempsFort: "Hoogtepunt", inscription: "Inschrijving",
+    inscriptionObligatoire: "Inschrijving verplicht", inscriptionAvant: (d) => `Inschrijven vóór ${d}`, places: (n) => `${n} plaatsen`,
+    prochaine: (d) => `Volgende: ${d}`, pasDeSeance: (d) => `Geen sessie op ${d}`, changementLe: (d) => `Wijziging op ${d}`,
+    derniere: (d) => `Laatste sessie: ${d}`, agendaVide: "Geen andere activiteiten gepland voor deze weken.", voirSuite: "Volgende weken bekijken",
     infoPratique: "Praktische info", chargement: "Planning wordt geladen…",
   },
   en: {
@@ -66,6 +78,10 @@ export const textesPlanning: Record<Locale, TextesPlanning> = {
     accueilTitre: "The next two weeks", accueilTout: "See the full schedule",
     accueilAutres: (n) => `+ ${n} more ${n > 1 ? "activities" : "activity"}`, accueilProchaine: "Next activity",
     accueilVide: "The programme of upcoming activities is coming soon.",
+    neManquer: "Don't miss", chaqueSemaine: "Every week", agenda: "Diary", tempsFort: "Highlight", inscription: "Registration",
+    inscriptionObligatoire: "Registration required", inscriptionAvant: (d) => `Register by ${d}`, places: (n) => `${n} places`,
+    prochaine: (d) => `Next: ${d}`, pasDeSeance: (d) => `No session on ${d}`, changementLe: (d) => `Change on ${d}`,
+    derniere: (d) => `Last session: ${d}`, agendaVide: "No other activities planned for these weeks.", voirSuite: "See the following weeks",
     infoPratique: "Practical information", chargement: "Loading the schedule…",
   },
 };

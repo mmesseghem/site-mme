@@ -1572,3 +1572,23 @@ img {
   .pl-tuile { width: 50px; }
   .pl-cal-jour { min-height: 46px; }
 }
+/* Temps forts et parties de la liste */
+.pl-partie { display: flex; flex-direction: column; gap: 12px; }
+.pl-partie-titre { margin: 0; display: flex; align-items: center; gap: 8px; font-family: var(--titres); font-size: 15px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gris); }
+.pl-partie-fort { color: var(--bordeaux); }
+.pl-partie-hebdo { color: var(--vert-texte); }
+.pl-forts { list-style: none; margin: 0; padding: 0; display: grid; align-items: start; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.pl-fort { display: flex; gap: 16px; align-items: flex-start; padding: 18px; background: var(--blanc); border: 2px solid var(--bordeaux); border-radius: 20px; }
+.pl-tuile-fort { background: var(--bordeaux); color: var(--blanc); width: 64px; }
+.pl-tuile-fort b { font-size: 28px; }
+.pl-fort .pl-ligne-titre { font-size: 21px; }
+.pl-fort-resume { color: var(--encre); }
+.pl-inscription { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 8px 12px; border-radius: 12px; background: var(--fond-rose); color: var(--bordeaux); font-size: 15px; }
+.pl-inscription > span { color: var(--encre); }
+.pl-icone-ronde { flex: none; width: 44px; height: 44px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--fond-rose); color: var(--bordeaux); }
+.pl-etiquette-fort { background: var(--bordeaux); color: var(--blanc); }
+.pl-ligne-fort { border-color: var(--bordeaux); }
+.pl-points i.pl-point-fort { width: 11px; height: 11px; box-shadow: 0 0 0 2px var(--blanc), 0 0 0 3.5px var(--bordeaux); }
+.acc-pl-fort .acc-pl-icone { color: var(--bordeaux); }
+.activite .acc-pl-fort .acc-pl-corps a { font-weight: 700; color: var(--bordeaux); }
+@media (max-width: 760px) { .pl-forts { grid-template-columns: minmax(0, 1fr); } .pl-fort { padding: 14px; gap: 12px; } }
