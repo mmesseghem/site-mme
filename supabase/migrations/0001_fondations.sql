@@ -192,3 +192,12 @@ create trigger journal_newsletters
 create policy "newsletters : seul l'administrateur supprime un numéro publié" on public.newsletters
   as restrictive for delete to authenticated
   using (statut <> 'publiee' or public.mon_role() = 'administrateur');
+
+-- ---------- Autorisations d'accès (le projet n'ouvre rien automatiquement) ----------
+-- Les règles ci-dessus (RLS) décident ensuite, ligne par ligne, ce que chacun voit vraiment.
+grant usage on schema public to anon, authenticated, service_role;
+grant select on public.activites, public.newsletters to anon;
+grant select, insert, update, delete on public.profils, public.activites, public.newsletters to authenticated;
+grant select on public.journal, public.demandes_medicaments to authenticated;
+grant all on all tables in schema public to service_role;
+grant usage, select on all sequences in schema public to service_role;
