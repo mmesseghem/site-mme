@@ -825,6 +825,175 @@ img {
   color: var(--gris);
 }
 
+/* ---------- Pages de contenu ---------- */
+.page-soustitre {
+  margin: 12px 0 0;
+  font-size: 20px;
+  color: var(--gris);
+}
+.contenu {
+  max-width: 46rem;
+}
+.contenu > p,
+.contenu li {
+  margin: 0 0 14px;
+}
+.contenu h2 {
+  margin: 40px 0 14px;
+  font-size: 28px;
+}
+.contenu ul {
+  margin: 0 0 14px;
+  padding-left: 22px;
+}
+.contenu .encadre {
+  margin: 24px 0;
+}
+.contenu .encadre strong {
+  display: block;
+  margin-bottom: 6px;
+}
+.contenu .encadre p {
+  margin: 0;
+}
+.contenu-photo {
+  width: 100%;
+  height: auto;
+  margin: 28px 0;
+  border-radius: 20px;
+}
+.contenu-lien a {
+  font-weight: 600;
+}
+.etapes {
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  counter-reset: etape;
+}
+.etapes li {
+  position: relative;
+  padding-left: 48px;
+  min-height: 34px;
+  counter-increment: etape;
+}
+.etapes li::before {
+  content: counter(etape);
+  position: absolute;
+  left: 0;
+  top: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bordeaux);
+  color: var(--blanc);
+  font-family: var(--titres);
+  font-weight: 600;
+}
+/* Frise chronologique (historique) */
+.frise {
+  margin: 36px 0 0;
+  padding: 0 0 0 24px;
+  list-style: none;
+  border-left: 2px solid var(--bordure);
+}
+.frise li {
+  position: relative;
+  margin: 0 0 28px;
+}
+.frise li::before {
+  content: "";
+  position: absolute;
+  left: -32px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--vert);
+  border: 3px solid var(--fond);
+}
+.frise-date {
+  font-family: var(--titres);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--bordeaux);
+}
+.frise p {
+  margin: 4px 0 0;
+}
+.frise-titre {
+  margin: 2px 0 0;
+  font-size: 20px;
+}
+.contenu-citation {
+  margin: 28px 0;
+  padding-left: 20px;
+  border-left: 4px solid var(--vert);
+  font-family: var(--titres);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--bordeaux);
+}
+/* Questions fréquentes (dépliables) */
+.questions {
+  margin: 0 0 16px;
+  border-top: 1px solid var(--bordure);
+}
+.questions details {
+  border-bottom: 1px solid var(--bordure);
+}
+.questions summary {
+  padding: 18px 36px 18px 0;
+  position: relative;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.questions summary::-webkit-details-marker {
+  display: none;
+}
+.questions summary::after {
+  content: "+";
+  position: absolute;
+  right: 6px;
+  top: 14px;
+  font-size: 24px;
+  color: var(--bordeaux);
+}
+.questions details[open] summary::after {
+  content: "−";
+}
+.questions details p {
+  margin: 0 0 14px;
+  color: var(--encre);
+}
+/* Informations reprises de l'ancien site, à confirmer par l'équipe */
+.a-verifier {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border: 1px dashed #b26b00;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #8a5300;
+  background: #fff4e0;
+  vertical-align: 1px;
+}
+/* Information manquante, à fournir par l'équipe */
+.a-completer {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px dashed var(--gris);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--gris);
+  background: #fffbe6;
+}
+
 /* ---------- Pied de page ---------- */
 .pied {
   background: var(--encre);
@@ -952,16 +1121,6 @@ img {
 }
 .hero-horaires {
   font-size: 16px !important;
-}
-/* Information manquante, à fournir par l'équipe : bien visible tant que le site est en construction. */
-.a-completer {
-  display: inline-block;
-  padding: 2px 8px;
-  border: 1px dashed var(--gris);
-  border-radius: 6px;
-  font-size: 14px;
-  color: var(--gris);
-  background: #fffbe6;
 }
 .infos-pratiques {
   display: grid;
@@ -1164,4 +1323,153 @@ img {
   .philosophie-maison path {
     stroke-dashoffset: 0;
   }
+}
+
+/* ---------- Formulaire de demande de médicaments ---------- */
+.formulaire,
+.form-message {
+  max-width: 44rem;
+  margin-top: 40px;
+  padding: 32px;
+  border: 1px solid var(--bordure);
+  border-radius: 20px;
+  background: var(--blanc);
+}
+.formulaire h2,
+.form-message h2 {
+  margin: 0 0 20px;
+  font-size: 26px;
+}
+.form-grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 20px;
+  margin-bottom: 18px;
+}
+.form-champ {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+}
+.form-requis {
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--gris);
+}
+.form-aide {
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--gris);
+}
+.formulaire input:not([type="checkbox"]),
+.formulaire select,
+.formulaire textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #d9cfce;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 400;
+  color: var(--encre);
+  background: var(--fond);
+}
+.formulaire textarea {
+  resize: vertical;
+}
+.formulaire input:focus,
+.formulaire select:focus,
+.formulaire textarea:focus {
+  outline: 3px solid var(--vert);
+  outline-offset: 1px;
+  border-color: var(--vert);
+}
+.formulaire [aria-invalid="true"] {
+  border-color: var(--bordeaux);
+}
+.form-erreur {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--bordeaux);
+}
+.form-alerte {
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  border-left: 4px solid var(--bordeaux);
+  border-radius: 8px;
+  background: var(--fond-rose);
+}
+.form-alerte p {
+  margin: 4px 0 0;
+}
+.form-rgpd {
+  margin: 24px 0 16px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  font-size: 15px;
+  background: var(--fond-vert);
+}
+.form-rgpd p {
+  margin: 4px 0 0;
+}
+.form-case {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+.form-case input {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  accent-color: var(--vert);
+}
+.formulaire button[type="submit"] {
+  margin-top: 20px;
+  border: none;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.formulaire button[disabled] {
+  opacity: 0.6;
+  cursor: wait;
+}
+.form-piege {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.form-message-ok {
+  border-color: var(--vert);
+  background: var(--fond-vert);
+}
+.form-message-demo {
+  border: 1px dashed var(--gris);
+  background: #fffbe6;
+}
+.form-message button {
+  border: 1.5px solid var(--encre);
+  font: inherit;
+  font-weight: 600;
+  background: none;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .formulaire,
+  .form-message {
+    padding: 22px 18px;
+  }
+  .form-grille {
+    grid-template-columns: 1fr;
+  }
+}
+.formulaire > .form-erreur {
+  display: block;
+}
+.formulaire button[type="submit"] {
+  display: block;
 }

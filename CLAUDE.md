@@ -3,7 +3,7 @@
 Ce fichier est lu par Claude Code au début de chaque session. Il est écrit en français : les personnes qui travaillent sur ce dépôt (Michaël, kiné et référent technique ; Séverine, responsable du contenu) ne sont pas informaticiennes de métier. Réponds en français, sans jargon. Si un terme technique est nécessaire, explique-le en une phrase.
 
 ## Le projet
-Site vitrine de la MME (ASBL, Rue Esseghem 24, 1090 Jette), en Next.js, déployé sur Vercel à partir de ce dépôt GitHub. Trois langues : français, néerlandais, anglais. Un espace d'administration (Supabase, données hébergées en Europe) est prévu pour le planning des activités, la newsletter et les inscriptions.
+Site vitrine de la MME (ASBL, Rue Esseghem 24, 1090 Jette), en Next.js, déployé sur Vercel à partir de ce dépôt GitHub. Trois langues : français, néerlandais, anglais. Un espace d'administration (Supabase, données hébergées en Europe) est en construction pour le planning des activités, la newsletter, les inscriptions et le suivi des demandes de médicaments. Les e-mails partent par Mailjet ; la traduction de la newsletter utilise DeepL.
 
 Le contexte complet (décisions, inventaire de l'ancien site, historique) est dans le projet Claude « Site internet » (fichier `Contexte_Projet_Site_MME_v2`). Il n'est volontairement pas copié dans ce dépôt public, car il contient des informations internes (comptes, domaines, piratage de l'ancien site). Les repères utiles au code sont résumés ci-dessous. Si une information manque ou semble dépassée, demande-la au lieu de la deviner.
 
@@ -14,21 +14,31 @@ Commandes utiles :
 
 Organisation du code :
 - `app/[lang]/` : les pages, une version par langue (`/fr`, `/nl`, `/en`).
-- `content/dictionnaires.ts` : tous les textes du site dans les trois langues.
-- `lib/site.ts` : coordonnées et structure du menu.
+- `app/[lang]/[...chemin]/page.tsx` : toutes les pages intérieures (contenu tiré de `content/pages/`, sinon page « en préparation »).
+- `content/dictionnaires.ts` : les textes communs du site (menu, accueil, pied de page) dans les trois langues.
+- `content/pages/` : le contenu des pages intérieures, en blocs (paragraphe, liste, étapes, encadré, FAQ…), affiché par `components/Contenu.tsx`. Étiquettes « à vérifier » (orange) et « à compléter » (jaune) pour ce que l'équipe doit relire.
+- `content/formulaires.ts` et `app/actions/medicaments.ts` : le formulaire de demande de médicaments (textes, puis envoi par e-mail via Mailjet).
+- `lib/site.ts` : coordonnées, horaires, structure du menu, et les réglages simples : `alerte` (bandeau en haut du site), `inscriptionsOuvertes` (page « S'inscrire »), `medecins` (liste du formulaire ; vide = champ masqué).
+- `lib/horaires.ts` : le statut d'ouverture en temps réel (heure de Bruxelles, jours fériés belges).
+- `supabase/migrations/` : la structure de la base de données de l'espace d'administration et ses règles de sécurité.
+- `.env.example` : la liste des réglages secrets à saisir dans Vercel (sans aucune valeur).
 - `components/` : en-tête, pied de page et éléments réutilisés.
 - `app/globals.css` : la charte graphique (couleurs, polices, mise en page).
 - Version de Next.js récente : lis `AGENTS.md` et la documentation dans `node_modules/next/dist/docs/` avant d'écrire du code.
 
 ## Repères
 - **Coordonnées** : Rue Esseghem 24, 1090 Jette · 02 424 25 40 · fax 02 420 36 90 · info@mmesseghem.be · lundi–vendredi 8h–19h · en dehors des heures : garde bruxelloise 1733.
-- **Design** : la version 1 de la maquette est la base. Repris de la version premium : les cartes numérotées d'accès rapide (Prendre rendez-vous / Demander un médicament / Devenir patient), la section « Nous trouver » (coordonnées + photo de la façade), la section « Notre philosophie » et son animation. À ne pas reprendre : le trait-maison (ligne interrompue après la maison) et le slider « maman + enfant ».
+- **Design** : la version 1 de la maquette est la base ; l'accueil suit la **version B** (choisie le 26/11/2026) : bandeau d'alerte ; boutons « Prendre un rendez-vous : 02 424 25 40 » et « Demander un médicament » empilés avec le statut d'ouverture à côté ; photo de la façade ; bloc d'infos (adresse, contact, horaires) ; encadré urgences (1733, 112) ; « Je souhaite… » (01 médicament, 02 FAQ, 03 inscription) ; nos soins ; soins au forfait ; activités et La Récré ; philosophie. Repris de la version premium : les cartes numérotées d'accès rapide (Prendre rendez-vous / Demander un médicament / Devenir patient), la section « Nous trouver » (coordonnées + photo de la façade), la section « Notre philosophie » et son animation. À ne pas reprendre : le trait-maison (ligne interrompue après la maison) et le slider « maman + enfant ».
 - **Charte** : bordeaux #6C0E0F (principal), #4E0A0B (foncé) ; vert #189144 (accent), #137A39 pour les petits textes ; gris #5E5F62 ; encre #2A1A1B ; fonds #FBF9F8, #F6EEEE, #EAF5ED. Polices : Outfit (titres), Figtree (texte). Libellés en majuscules espacées, comme le logo.
 - **Menu** (version 1) : Accueil · L'équipe · En pratique · Nos actions en santé · Contacts, plus le bouton téléphone.
-  - *L'équipe* (9 pôles, dans cet ordre) : Accueil, Médecine générale, Kinésithérapie, Pôle infirmier, Psychologue, Assistante sociale, Logopédie, Actrices en santé, Pôle administratif.
+  - *L'équipe* (10 pôles, dans cet ordre) : Accueil, Médecine générale, Kinésithérapie, Pôle infirmier, Psychologue, Assistante sociale, Logopédie, Ergothérapie, Actrices en santé, Pôle administratif.
   - *En pratique* : Demande de médicament(s), S'inscrire à la maison médicale, FAQ, Newsletter.
   - *Nos actions en santé* : Planning des activités, La récré, Psychomotricité relationnelle.
   - *Notre philosophie* et *Historique* : accessibles depuis l'accueil et le pied de page.
+- **Inscriptions des patients** : fermées, sans liste d'attente (`inscriptionsOuvertes = false`). Si cela change, mettre aussi à jour la carte « S'inscrire » de l'accueil dans le dictionnaire.
+- **Formulaire de médicaments** : envoi par e-mail (Mailjet) à l'adresse réglée dans Vercel ; en « mode test » tant que les réglages manquent ; anti-spam (champ piège, délai minimum, limite par appareil) ; jamais de faux « envoyé ».
+- **Espace d'administration** (décisions du 26/11/2026) : comptes sur invitation seulement (Michaël administrateur), connexion par lien e-mail + code sur le téléphone, rôles (administrateur, contenu, accueil, lecture), journal des actions, demandes de médicaments gardées 30 jours puis effacées. La sécurité passe avant tout : l'ancien site a été piraté par un accès d'administration.
+- **Newsletter** : écrite dans l'espace d'administration, publiée à la fois sur le site et par e-mail (Mailjet garde les inscrits). Trois langues ; chaque inscrit reçoit la sienne (français par défaut, lien pour changer). Traduction proposée par DeepL et relue avant publication ; publication bloquée tant qu'une langue manque.
 - **Photos** : en priorité les vraies photos de la MME. Banques d'images gratuites seulement pour des visuels neutres.
 
 ## Qui modifie quoi
@@ -46,6 +56,8 @@ Tout ce qui est écrit ici peut être lu par n'importe qui. Il ne doit donc jama
 - Demande confirmation avant de créer un document ou un fichier qui n'est pas du code du site.
 - Explique en une ou deux phrases ce que tu as changé et pourquoi, en termes simples.
 - Quand une décision change, propose de mettre à jour ce fichier.
+- Une conversation par chantier (ou par branche) : en fin de chantier, propose de mettre à jour ce fichier et le fichier de contexte du projet Claude.
+- La version de travail la plus complète est la branche `contenu-pages` (pas encore fusionnée dans `main`) : pars de là pour les nouveaux chantiers, sauf indication contraire. La branche `espace-admin` (fondations de l'espace d'administration) attend l'accord de Michaël.
 
 ## Liste de contrôle avant publication
 1. **Cohérence** : charte respectée (couleurs et polices ci-dessus), structure du menu, style de la maquette version 1.

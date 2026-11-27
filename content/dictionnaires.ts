@@ -58,7 +58,7 @@ const fr = {
   } satisfies Record<ActionSlug, string>,
   maison: {
     philosophie: "Notre philosophie",
-    historique: "Historique",
+    historique: "Notre histoire",
     "offres-emploi": "Offres d'emploi",
     confidentialite: "Politique de confidentialité",
   } satisfies Record<MaisonSlug, string>,
@@ -66,7 +66,7 @@ const fr = {
     surtitre: "Maison médicale de quartier à Jette",
     titre: "Une maison médicale à votre écoute",
     texte: "Des soins de qualité, une approche humaine, pour tous les âges de la vie.",
-    boutonAppeler: "Appeler : 02 424 25 40",
+    boutonAppeler: "Prendre un rendez-vous : 02 424 25 40",
     boutonMedic: "Demander un médicament",
     altFacade: "Façade de la maison médicale avec son enseigne, rue Esseghem 24",
     statut: {
@@ -88,7 +88,7 @@ const fr = {
     souhaits: [
       { titre: "Demander un médicament", texte: "Pour vos traitements chroniques. Prescription sous 72 h." },
       { titre: "Lire les questions fréquentes", texte: "Les réponses aux questions les plus courantes." },
-      { titre: "S'inscrire à la maison médicale", texte: "Habitants du quartier : découvrez comment vous inscrire." },
+      { titre: "S'inscrire à la maison médicale", texte: "Les inscriptions sont fermées pour le moment : tous les détails ici." },
     ],
     lienAcces: "Plan et accès",
     libHoraires: "Accueil et téléphone",
@@ -201,7 +201,7 @@ const nl: Dictionnaire = {
   },
   maison: {
     philosophie: "Onze visie",
-    historique: "Geschiedenis",
+    historique: "Onze geschiedenis",
     "offres-emploi": "Vacatures",
     confidentialite: "Privacybeleid",
   },
@@ -209,7 +209,7 @@ const nl: Dictionnaire = {
     surtitre: "Wijkgezondheidscentrum in Jette",
     titre: "Een wijkgezondheidscentrum dat naar u luistert",
     texte: "Kwaliteitsvolle zorg met een menselijke aanpak, voor alle leeftijden.",
-    boutonAppeler: "Bellen: 02 424 25 40",
+    boutonAppeler: "Afspraak maken: 02 424 25 40",
     boutonMedic: "Geneesmiddel aanvragen",
     altFacade: "Gevel van het wijkgezondheidscentrum met het uithangbord, Rue Esseghem 24",
     statut: {
@@ -231,7 +231,7 @@ const nl: Dictionnaire = {
     souhaits: [
       { titre: "Een geneesmiddel aanvragen", texte: "Voor uw chronische behandelingen. Voorschrift binnen 72 uur." },
       { titre: "De veelgestelde vragen lezen", texte: "Antwoorden op de meest gestelde vragen." },
-      { titre: "Me inschrijven in het wijkgezondheidscentrum", texte: "Woont u in de wijk? Ontdek hoe u zich inschrijft." },
+      { titre: "Me inschrijven in het wijkgezondheidscentrum", texte: "De inschrijvingen zijn momenteel gesloten: alle details hier." },
     ],
     lienAcces: "Kaart en bereikbaarheid",
     libHoraires: "Onthaal en telefoon",
@@ -342,7 +342,7 @@ const en: Dictionnaire = {
   },
   maison: {
     philosophie: "Our philosophy",
-    historique: "History",
+    historique: "Our history",
     "offres-emploi": "Job vacancies",
     confidentialite: "Privacy policy",
   },
@@ -350,7 +350,7 @@ const en: Dictionnaire = {
     surtitre: "Neighbourhood health centre in Jette",
     titre: "A health centre that listens to you",
     texte: "Quality care with a human approach, for all ages.",
-    boutonAppeler: "Call: 02 424 25 40",
+    boutonAppeler: "Book an appointment: 02 424 25 40",
     boutonMedic: "Request medication",
     altFacade: "Front of the health centre with its sign, Rue Esseghem 24",
     statut: {
@@ -372,7 +372,7 @@ const en: Dictionnaire = {
     souhaits: [
       { titre: "Request medication", texte: "For your ongoing treatments. Prescription within 72 hours." },
       { titre: "Read the frequently asked questions", texte: "Answers to the most common questions." },
-      { titre: "Register with the health centre", texte: "Live in the neighbourhood? Find out how to register." },
+      { titre: "Register with the health centre", texte: "Registrations are currently closed: all the details here." },
     ],
     lienAcces: "Map and access",
     libHoraires: "Reception and phone",

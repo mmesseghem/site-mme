@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Contenu from "@/components/Contenu";
 import { getDictionnaire } from "@/content/dictionnaires";
+import { pagesContenu } from "@/content/pages";
 import { hasLocale, href } from "@/lib/i18n";
 import { contact } from "@/lib/site";
 
@@ -71,8 +73,10 @@ export default async function Contact({ params }: PageProps<"/[lang]/contact">) 
             height={1024}
             sizes="(max-width: 960px) 100vw, 540px"
           />
-          <p>{c.carte}</p>
         </div>
+      </div>
+      <div style={{ marginTop: 32 }}>
+        <Contenu blocs={pagesContenu.contact[lang].blocs} lang={lang} />
       </div>
     </section>
   );
