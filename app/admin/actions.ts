@@ -26,10 +26,12 @@ export async function envoyerLien(_e: EtatSimple, form: FormData): Promise<EtatS
   if (tropDEssais(`lien:${email}`, 5)) return { erreur: "Trop de demandes. Réessayez dans un quart d'heure." };
   const supabase = await clientSupabase();
   // shouldCreateUser: false → personne ne peut créer son propre compte.
-  await supabase.auth.signInWithOtp({
+  const { error } = await supabase.auth.signInWithOtp({
     email,
     options: { shouldCreateUser: false, emailRedirectTo: `${await adresseSite()}/admin/auth/confirm` },
   });
+  // Trace pour le diagnostic (journaux Vercel) : seulement le code d'erreur, jamais l'adresse.
+  if (error) console.error("Connexion admin : lien non envoyé, code", error.code ?? error.status);
   // Même réponse que l'adresse soit connue ou non, pour ne rien révéler.
   return { message: "Si cette adresse a été invitée, un lien de connexion vient de lui être envoyé. Pensez à regarder dans les indésirables." };
 }
