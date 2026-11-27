@@ -33,7 +33,22 @@ export async function envoyerLien(_e: EtatSimple, form: FormData): Promise<EtatS
   // Trace pour le diagnostic (journaux Vercel) : seulement le code d'erreur, jamais l'adresse.
   if (error) console.error("Connexion admin : lien non envoyé, code", error.code ?? error.status);
   // Même réponse que l'adresse soit connue ou non, pour ne rien révéler.
-  return { message: "Si cette adresse a été invitée, un lien de connexion vient de lui être envoyé. Pensez à regarder dans les indésirables." };
+  return { message: "Si cette adresse a été invitée, un e-mail de connexion vient de lui être envoyé (pensez aux indésirables). Entrez le code qu'il contient ci-dessous, ou cliquez sur son lien." };
+}
+
+/** Connexion avec le code à 6 chiffres reçu par e-mail (plus sûr qu'un lien : les antivirus de messagerie
+ *  « testent » parfois les liens et les consomment avant la personne). */
+export async function verifierCodeEmail(_e: EtatSimple, form: FormData): Promise<EtatSimple> {
+  if (!supabaseConfigure()) return { erreur: "L'espace d'administration n'est pas encore branché." };
+  const email = String(form.get("email") ?? "").trim().toLowerCase();
+  const token = String(form.get("token") ?? "").replace(/\s/g, "");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { erreur: "Indiquez d'abord votre adresse e-mail." };
+  if (!/^\d{6,10}$/.test(token)) return { erreur: "Le code reçu par e-mail ne comporte que des chiffres." };
+  if (tropDEssais(`codemail:${email}`, 8)) return { erreur: "Trop d'essais. Réessayez dans un quart d'heure." };
+  const supabase = await clientSupabase();
+  const { error } = await supabase.auth.verifyOtp({ email, token, type: "email" });
+  if (error) return { erreur: "Code incorrect ou expiré. Demandez-en un nouveau." };
+  redirect("/admin/code");
 }
 
 // ---------- Deuxième vérification : code du téléphone ----------

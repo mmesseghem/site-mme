@@ -10,7 +10,7 @@ export default function Connexion() {
         <p className="admin-surtitre">MAISON MÉDICALE ESSEGHEM</p>
         <h1>Espace d&apos;administration</h1>
         <p className="admin-aide">
-          Entrez votre adresse e-mail : vous recevrez un lien de connexion. Seules les personnes invitées peuvent entrer.
+          Entrez votre adresse e-mail : vous recevrez un code de connexion. Seules les personnes invitées peuvent entrer.
         </p>
         <Suspense>
           <FormulaireConnexion />
