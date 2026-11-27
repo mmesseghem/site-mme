@@ -53,7 +53,7 @@ async function Liste() {
           </div>
         ))}
       </div>
-      <h2>Inviter une personne</h2>
+      <h2>Ajouter une personne</h2>
       <FormulaireInvitation />
     </>
   );

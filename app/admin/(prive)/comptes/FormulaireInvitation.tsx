@@ -25,7 +25,7 @@ export default function FormulaireInvitation() {
         </select>
       </label>
       <button type="submit" className="admin-bouton" disabled={enCours}>
-        {enCours ? "Envoi…" : "Envoyer l'invitation"}
+        {enCours ? "Création…" : "Créer le compte"}
       </button>
     </form>
   );

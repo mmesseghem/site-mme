@@ -89,15 +89,15 @@ export async function inviter(_e: EtatSimple, form: FormData): Promise<EtatSimpl
   if (!nom || nom.length > 80) return { erreur: "Indiquez un nom (80 caractères au plus)." };
   if (!roles.includes(role)) return { erreur: "Choisissez un rôle." };
 
-  const { data, error } = await clientService().auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${await adresseSite()}/admin/auth/confirm`,
-  });
-  if (error || !data.user) return { erreur: "L'invitation n'a pas pu être envoyée (adresse déjà invitée ?)." };
+  // Compte créé sans e-mail d'invitation : la personne se connecte ensuite elle-même sur /admin/connexion
+  // (lien par e-mail, puis code du téléphone). Aucun mot de passe n'existe.
+  const { data, error } = await clientService().auth.admin.createUser({ email, email_confirm: true });
+  if (error || !data.user) return { erreur: "Le compte n'a pas pu être créé (adresse déjà utilisée ?)." };
   // La fiche est créée au nom de l'administrateur : le journal note qui a invité.
   const { error: e2 } = await supabase.from("profils").insert({ id: data.user.id, nom, role });
-  if (e2) return { erreur: "L'invitation est partie, mais la fiche n'a pas pu être créée. Prévenez Claude." };
+  if (e2) return { erreur: "Le compte est créé, mais la fiche n'a pas pu l'être. Prévenez Claude." };
   revalidatePath("/admin/comptes");
-  return { message: `Invitation envoyée à ${email}. La personne devra activer le code sur son téléphone à sa première connexion.` };
+  return { message: `Compte créé pour ${email}. Prévenez la personne : elle va sur ${await adresseSite()}/admin/connexion, demande son lien de connexion, puis relie son téléphone (application de codes) à la première connexion.` };
 }
 
 export async function basculerActif(form: FormData) {
